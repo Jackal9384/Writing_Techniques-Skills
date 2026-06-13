@@ -37,6 +37,7 @@ description: NSFW内容专项写作技能，提供大众级/限制级/开放级�
 | `项目信息.json` | `大纲/` | NSFW 偏好（`nsfw_output_level`/`nsfw_character_tone`/`nsfw_tier_range`）及 `content_rating` | 读写 |
 | `润色配置.json` | `大纲/` | 润色模式（使用 `正文.polish_mode`） | 只读 |
 | `人物存档.md` | `大纲/人物/` | 角色性格/简介，限制级 OOC 判断依据 | 只读 |
+| `Prompt.json` | `大纲/剧情/` | 预生成的章节写作提示词（含 NSFW 写作指令段），由 Core 传递或直接读取 | 只读 |
 
 ## 执行模式
 
