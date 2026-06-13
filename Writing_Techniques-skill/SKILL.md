@@ -1,8 +1,8 @@
 ---
 name: Writing Techniques-skill
 description: >
-  Writing Techniques 写作技法技能包，覆盖小说创作全流程：创建新书项目 → 人物设定 → 剧情大纲 → 世界观编辑 → 正文写作（基础润色/NSFW）→ 伏笔管理/情节回忆 → 提示词增强/自动写作 → 学生作文辅助 → 快速创建/重建。
-  当用户表达写作相关意图时自动触发：写小说、创建新书、创建人物、设定编辑、剧情大纲、世界观、润色写作、写正文、写作文、整理已有设定、快速创建、NSFW写作等。
+  Writing Techniques 写作技法技能包，覆盖小说创作全流程：创建新书项目 → 人物设定 → 剧情大纲 → 世界观编辑 → 正文写作（基础润色/NSFW）→ 伏笔管理/情节回忆 → 提示词增强/自动写作 → 成品输出校验 → 学生作文辅助 → 快速创建/重建。
+  当用户表达写作相关意图时自动触发：写小说、创建新书、创建人物、设定编辑、剧情大纲、世界观、润色写作、写正文、写作文、整理已有设定、快速创建、NSFW写作、检验成品等。
 ---
 
 # Writing Techniques — 写作技法技能包
@@ -11,7 +11,7 @@ description: >
 
 ## 子技能索引
 
-本技能包包含以下 10 个子技能，按用户意图自动路由：
+本技能包包含以下 11 个子技能，按用户意图自动路由：
 
 | # | 子技能 | 路径 | 核心功能 |
 |---|--------|------|---------|
@@ -19,12 +19,13 @@ description: >
 | 2 | 创建人物 | `outline/characters/SKILL.md` | 创建角色，写入人物存档 |
 | 3 | 剧情编辑 | `outline/plot/SKILL.md` | 三模式（手动/辅助/自动）剧情大纲创建，内置上下文预读取与五维度情节合理性校验 |
 | 4 | 设定编辑 | `outline/settings/SKILL.md` | 编辑世界观、核心设定、基本信息 |
-| 5 | 基础写作辅助 | `body/Core/SKILL.md` | 正文润色优化，七项写作规范（含性格间接化） |
-| 6 | NSFW专项写作 | `body/NSFW/SKILL.md` | 成人内容三档写作，N1-N5色色值挡位体系 |
+| 5 | 基础写作辅助 | `body/Core/SKILL.md` | 正文润色优化，写作规范体系 |
+| 6 | NSFW专项写作 | `body/Special/NSFW/SKILL.md` | 成人内容三档写作，N1-N5色色值挡位体系 |
 | 7 | 学生作文 | `homework/SKILL.md` | 中小学作文写作助手 |
 | 8 | 快速创建 | `rebuild/SKILL.md` | 依照已有设定，按WT体系快速创建、重建书本的整体体系 |
-| 9 | 长篇专项 | `body/long/SKILL.md` | 伏笔放置、回收追踪与关键情节跨章节回忆，长篇/短篇通用 |
-| 10 | 提示词增强 | `body/Prompt-ex/SKILL.md` | 大纲→提示词转译，多源上下文聚合扩充，输出LLM可直接执行的高质量写作提示词，批量存储至 Prompt.json |
+| 9 | 长篇专项 | `body/Assist/long/SKILL.md` | 伏笔放置、回收追踪与关键情节跨章节回忆，长篇/短篇通用 |
+| 10 | 提示词增强 | `body/Assist/Prompt-ex/SKILL.md` | 大纲→提示词转译，多源上下文聚合扩充，输出LLM可直接执行的高质量写作提示词，批量存储至 Prompt.json |
+| 11 | 成品输出校验 | `body/Assist/Proofreading_Editing/SKILL.md` | 输出前最终合规校验：标点（CPS.json）+ 段落/字句（Core规范）双轨检验 |
 
 ## 意图路由规则
 
@@ -45,13 +46,16 @@ description: >
 ### 路由到「基础写作辅助」(body/Core/SKILL.md)
 触发词：润色、优化写作、改写、写正文、写章节、写这一段、帮我改一下这段
 
-### 路由到「NSFW专项写作」(body/NSFW/SKILL.md)
+### 路由到「NSFW专项写作」(body/Special/NSFW/SKILL.md)
 触发词：NSFW、成人内容、色情场景、床戏、吻戏、H场景、尺度再大一点、写XP、补充X能力、色色值、N1-N5、NSFW配置、nsfw-config、输出词级别、值域
 
-### 路由到「长篇专项」(body/long/SKILL.md)
+### 路由到「长篇专项」(body/Assist/long/SKILL.md)
 触发词：这是一个伏笔、此处为伏笔、埋伏笔、设伏笔、放置伏笔、回收伏笔、填坑、查看伏笔、伏笔列表、还有哪些坑没填、之前第X章、在第X章中、回顾第X章、XX事件是在哪一章、前文中XX、重温XX章节、回顾一下XX的情节、第X章发生了什么
 
-### 路由到「提示词增强」(body/Prompt-ex/SKILL.md)
+### 路由到「成品输出校验」(body/Assist/Proofreading_Editing/SKILL.md)
+触发词：检验一下、检查标点、合规检查、校验成品、标点检查、成品校验
+
+### 路由到「提示词增强」(body/Assist/Prompt-ex/SKILL.md)
 触发词：你再帮我补一点、帮我补一下这章、补全这章、扩充一下这章、展开这章、写XX作品的第XX章（无额外提示词）、写第XX章（无描述）、生成第XX章的写作提示词、批量生成章节提示词、自动生成第X到第Y章的提示词、全自动写作、按大纲自动写、继续写下一章
 
 ### 路由到「学生作文」(homework/SKILL.md)

@@ -521,7 +521,7 @@ description: >
 
 ```json
 {
-  "书名": "XX",
+  "book_name": "XX",
   "content_rating": "一般向",
   "nsfw_output_level": "限制级",
   "nsfw_tier_range": { "global": "N3-N4", "chapters": {} },
