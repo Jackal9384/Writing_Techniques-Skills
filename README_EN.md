@@ -4,40 +4,43 @@
 
 [中文](README.md) | [**English**](README_EN.md)
 
+V0.20
+
 ## What Is This
 
-A writing skill pack running within Claude Code, covering the entire novel-writing process from project initiation to final text. The skill pack consists solely of Markdown files, totaling 11 sub-skills.
+A writing skill pack running within Claude Code, covering the entire novel-writing process from project initiation to final text. The skill pack consists of Markdown and JSON files.
+
+## Recommended Setup
+
+- Delegate `Output Proofing` to a dedicated Agent to avoid consuming the main conversation context
+- Use `Prompt Enhancement` in **assisted creation mode** rather than full-auto — at minimum, tell the AI what plot points you want per chapter or per phase; output quality far exceeds zero-prompt auto-generation
+- Prompt engineering remains the best tool for steering AI at this stage — spending a few minutes crafting a good chapter prompt is far more efficient than repeatedly revising the output afterwards
 
 ## Skill List
 
 ```
-Outline Skills (5)/
-├── Create New Book     ← Set up project folder structure, collect metadata (title/length/genre),
-│                         generate config files
-├── Create Character    ← Template-based character creation (Main/Supporting/Extra),
-│                         auto bidirectional relationship sync
-├── Plot Editing        ← Three-mode storyline planning (manual/assisted/auto),
-│                         serial/standalone dual templates
-├── Setting Editing     ← Five-section guided filling: basics / synopsis / core / worldbuilding / secondary
-└── Quick Rebuild       ← Standardized migration of existing settings to WT specs, manual/auto dual mode
+Outline Skills/
+├── Create New Book
+├── Create Character
+├── Plot Editing
+├── Setting Editing
+└── Quick Rebuild
 
-Writing Skills (5)/
+Writing Skills/
+├── Router
+│   └── Write-Router
 ├── Core
-│   └── Basic Writing Aid   ← Text polishing engine, seven writing rules (paragraph rhythm / indirect
-│                             description / indirect character traits / scenery interleaving / dialogue
-│                             enhancement / deduplication), separate outline & main text gears
+│   └── Basic Writing Aid
 ├── Specialized
-│   └── Long-form           ← Full foreshadowing lifecycle (place/register/resolve/list),
-│                             cross-chapter plot recall
+│   ├── Combat
+│   ├── Romance
+│   └── Long-form
 └── Auxiliary
-    ├── Prompt Enhancement  ← Reads plot outline → aggregates characters/settings/foreshadowing/polish
-    │                         config → outputs high-quality LLM-executable writing prompts,
-    │                         batch persists to Prompt.json with user permission
-    └── Output Proofing     ← Final compliance check before output: CPS.json punctuation scan + Core norms
-                              paragraph/sentence structure scan — dual-track, auto-correct violations
+    ├── Prompt Enhancement
+    └── Output Proofing
 
-Other Skills (1)/
-└── Student Essay           ← K-12 essay writing assistant, auto-detect genre / adapt grade / control word count
+Other Skills/
+└── Student Essay
 ```
 
 ## Design Philosophy
@@ -47,9 +50,10 @@ Other Skills (1)/
 - **Lazy-Friendly**: Automate what can be automated, infer what can be inferred, use defaults where possible
 - **Layered Polishing**: Outline has one polishing standard, main text has another — independently configured, with secondary confirmation before writing
 - **Foreshadowing Tracking**: Auto-register on placement, auto-match on resolution, auto-alert for cross-chapter unresolved items
-- **Fully Automated Writing**: Zero-prompt batch chapter prompt generation, persisted to Prompt.json for on-demand execution
-- **Loose Coupling**: Each skill operates independently, mutually dispatched on demand, with no strong dependencies
-- **Adaptive Routing**: Natural language intent recognition → auto-dispatch to the right sub-skill, no commands to memorize
+- **Fully Automated Writing**: Zero-prompt batch chapter prompt generation, persisted to Prompt.md for on-demand execution
+- **Loose Coupling**: Each skill operates independently, Write-Router orchestrates scheduling, every writing skill focuses on its own domain
+- **Adaptive Routing**: Natural language intent recognition → auto-dispatch to correct sub-skill, no commands to memorize
+- **Standardized Writing Pipeline**: User prompt → Write-Router (detect + pre-allocate) → Core + Specialized skills → Long-form → Output Proofing, full pipeline driven exclusively by Write-Router
 
 ## Typical Workflow
 
@@ -60,16 +64,44 @@ Create New Book ──→ Create Character ──→ Edit Settings ──→ Plo
                                                        Prompt Enhancement
                                                                │
                                                                ▼
-                                                      Write Body (Basic Writing Aid)
+                                                      Write-Router (Write Body)
                                                                │
-                                                         ┌─────┴─────┐
-                                                         ▼             ▼
-                                                  Output Proofing   Long-form
-                                                                   (Foreshadowing
-                                                                    / Recall)
+                                                    ┌─────┬────┼────┬─┘
+                                                    ▼     ▼    ▼    ▼
+                                                  Core Combat Romance
+                                                (general)(combat)(romance)
+                                                    │     │    │
+                                                    └─────┼────┘
+                                                          ▼
+                                                     Long-form
+                                                  (Foreshadowing
+                                                   / Recall)
+                                                         │
+                                                         ▼
+                                                  Output Proofing
+                                                  (Verify + Write)
 ```
 
 > Workflow is not mandatory — jump in at any stage. If you already have existing settings, start directly from «Quick Rebuild».
+
+### Standardized Writing Pipeline (Write-Router Driven)
+
+Upon receiving user创作意图, Write-Router exclusively orchestrates execution:
+
+```
+User Prompt → Write-Router
+               ├── ① Content detection & classification
+               ├── ② Paragraph pre-allocation
+               ├── ③ Parallel dispatch
+               │      ├── general  → Core (plain-text optimization)
+               │      ├── combat  → Combat Specialized
+               │      └── romance → Romance Specialized
+               ├── ④ Result integration + exemption collection + consistency check
+               ├── ⑤ → Long-form (foreshadowing registration / plot recall)
+               └── ⑥ → Output Proofing (punctuation + structure → write)
+```
+
+Each stage is auto-detected and dispatched by Write-Router — no manual triggering needed.
 
 ## How to Use
 
@@ -85,10 +117,12 @@ After installing this skill pack in Claude Code, simply converse in natural lang
 - "Edit settings" → Five-section worldbuilding refinement
 
 **Body Writing:**
-- "Write main text / Polish this passage" → Invoke Basic Writing Aid to optimize text
-- "Write Chapter X" (no prompt) → Auto-dispatch Prompt Enhancement → Generate writing instructions → Execute
+- "Write main text / Polish this passage" → Route to Write-Router → Auto-detect content type → Dispatch
+- "Write Chapter X" (no prompt) → Write-Router auto-dispatches Prompt Enhancement → Generate instructions → Execute
 - "Help me expand on this" → Single-chapter prompt expansion
-- "Batch generate chapter prompts" → Auto-generate chapters X through Y prompts, store to Prompt.json
+- "Batch generate chapter prompts" → Auto-generate chapters X through Y, store to Prompt.md
+- "Write a combat scene / Polish this fight" → Write-Router detects combat → Auto-dispatches Combat Specialized
+- "Write a romantic scene / Polish this flirting" → Write-Router detects romance → Auto-dispatches Romance Specialized
 
 **Foreshadowing Management:**
 - "This is a foreshadowing" (annotated in text) → Auto-register
@@ -115,11 +149,7 @@ After installing this skill pack in Claude Code, simply converse in natural lang
 │   │   └── Character_Archive.md ← Unified archive for all characters (Main/Supporting/Extra tiers)
 │   └── Plot/
 │       ├── Plot_Outline.md      ← Main storyline and volumes
-│       └── Prompt.json          ← Batch-generated writing prompts (from Prompt Enhancement)
+│       └── Prompt.md            ← Batch-generated writing prompts (from Prompt Enhancement)
 ├── Main_Text/                   ← Official chapters (Ch_XX Chapter_Title.md)
 └── Extras/                      ← Side stories (Extra_Title_(X).md)
 ```
-
-## Version
-
-V0.13_Alpha
