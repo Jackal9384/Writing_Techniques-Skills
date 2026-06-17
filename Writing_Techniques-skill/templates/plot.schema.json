@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "剧情大纲模板",
+  "description": "剧情大纲.md 的结构模板——连载/非连载/分卷三形态。字段定义唯一来源，剧情编辑技能按此组装渲染。模板库 V1.0。",
+  "version": "1.0",
+  "templates": {
+    "serial": {
+      "name": "连载作品（5阶段 + 可选番外）",
+      "applicable": "长篇/超长篇、分卷连载、网络连载、系列作品",
+      "md_rendering": {
+        "entry_format": "# {书名} — 剧情大纲\n\n> 最后更新：{日期}\n\n## 梗概\n\n{散文段}",
+        "stage_title_format": "##### 第{N}阶段（{阶段名}）：{约XX章，≤全篇X%} {阶段目标}",
+        "chapter_item_format": "- **≈X—X章**：\n---\n{具体剧情要点}"
+      },
+      "stages": [
+        { "name": "第一阶段（前期）", "ratio": "≤20%", "default_goal": "铺垫与展开。设计主要人物的个人单元回，基本展开人物角色，浅尝辄止，不过多泄露主线", "tension_level": "L1", "tension_note": "平静建立——埋悬念种子" },
+        { "name": "第二阶段（中期）", "ratio": "≤40%", "default_goal": "深入展开。大量事件与冲突爆发，主要角色单元回再次展开，角色联动，核心冲突酝酿", "tension_level": "L3", "tension_note": "中度冲突——矛盾显性化" },
+        { "name": "第三阶段（过度）", "ratio": "≤25%", "default_goal": "高潮。最重要冲突爆发，聚焦主角与重要角色，其他角色退为龙套，向安稳结尾过渡", "tension_level": "L4", "tension_note": "第一波峰——大转折/重大代价" },
+        { "name": "第四阶段（尾声）", "ratio": "≤15%", "default_goal": "收束。故事终点，一切在此结束，平静或最终决战后落下帷幕", "tension_level": "L2", "tension_note": "低谷回落——收束余韵" },
+        { "name": "番外", "ratio": "不限", "default_goal": "可选，独立于主线之外", "tension_level": null }
+      ]
+    },
+    "nonserial": {
+      "name": "非连载作品（4阶段）",
+      "applicable": "短篇/中篇、单行本、一次性完结作品",
+      "md_rendering": {
+        "entry_format": "# {书名} — 剧情大纲\n\n> 最后更新：{日期}\n\n## 梗概\n\n{散文段}",
+        "stage_title_format": "##### 第{N}阶段（{阶段名}）：{约XX章，≤全篇X%} {阶段目标}",
+        "chapter_item_format": "{具体剧情要点}"
+      },
+      "stages": [
+        { "name": "第一阶段（开端）", "ratio": "≤10%", "default_goal": "引入世界观与主要人物，抛出核心矛盾", "tension_level": "L1", "tension_note": "平静建立——抛核心矛盾" },
+        { "name": "第二阶段（发展）", "ratio": "≤40%", "default_goal": "展开冲突，深化角色塑造，推进主线剧情", "tension_level": "L3", "tension_note": "中度冲突——冲突展开" },
+        { "name": "第三阶段（高潮）", "ratio": "≤25%", "default_goal": "矛盾爆发顶点，核心冲突集中解决", "tension_level": "L4", "tension_note": "波峰——冲突爆发顶点" },
+        { "name": "第四阶段（结局）", "ratio": "≤15%", "default_goal": "收束所有线索，给出最终结局", "tension_level": "L2", "tension_note": "低谷回落——收束" }
+      ]
+    },
+    "volume_single_file": {
+      "name": "分卷单文件模式",
+      "applicable": "volumes.multi_file = false",
+      "md_rendering": {
+        "volume_title_format": "## 第N卷：{卷名}",
+        "note": "所有卷写入同一 剧情大纲.md，每卷以二级标题分隔，阶段在该卷下排列"
+      }
+    },
+    "volume_multi_file": {
+      "name": "分卷多文件模式",
+      "applicable": "volumes.multi_file = true",
+      "md_rendering": {
+        "file_name": "剧情大纲-卷{N}.md",
+        "entry_format": "# {书名} — 剧情大纲（卷{N}：{卷名}）\n\n> 最后更新：{日期}\n> 所属：{书名} / 第{N}卷 / 共{N}卷\n\n## 本卷梗概\n\n{该卷的散文段梗概}",
+        "note": "每卷文件独立包含梗概段（卷级）+ 阶段内容；写入顺序：卷1 → 卷2 → ... → 卷N；写完一卷确认后继续下一卷"
+      }
+    }
+  },
+  "annotations": {
+    "compliance_mode": {
+      "format": "<!-- compliance_mode: {宽松/标准/严格} -->",
+      "location": "大纲文件末尾",
+      "values": ["宽松", "标准", "严格"],
+      "note": "宽松=仅大方向严重偏离时提醒；标准（推荐）=阶段级别偏离时提醒；严格=章节级别偏离即提醒"
+    },
+    "nsfw_tier_marking": {
+      "format": "阶段标题旁标注色色值范围",
+      "trigger": "content_rating == NSFW 且配置了 nsfw_tier_range.chapters"
+    },
+    "tension_level": {
+      "format": "阶段可标注张力等级〔L1-L5〕（可选）",
+      "values": ["L1", "L2", "L3", "L4", "L5"],
+      "note": "张力等级为软引导建议值（V1.0 增强，规划数据见 data/plot-wave-spec.json，正文事件烈度见 data/chapter-tension-guide.json）——不满足不拦截，仅输出波动建议；阶段可自定义调整。Write-Router 写正文时按此标注传导 context.tension_level"
+    }
+  },
+  "core_rules": [
+    "梗概段从 项目信息.json 取书名/篇幅/种类/传播范围 + 预计字数/章节数/走向",
+    "阶段标题格式：##### 第{N}阶段（{阶段名}）：{约XX章，≤全篇X%} {阶段目标}",
+    "分卷信息同步写入 项目信息.json → volumes（enabled/multi_file/count/list，list 项含 number/name/chapter_range/word_count/polish_mode）",
+    "每卷润色配置写入 写作配置.json → 分卷.{卷号}（未配置卷继承 大纲 全局）",
+    "NSFW 时色色值规划写入 项目信息.json → nsfw_tier_range.chapters，并在大纲阶段标题旁标注",
+    "每阶段完成后即时写入文件；落盘必经成品输出校验（md_category: 大纲）"
+  ]
+}

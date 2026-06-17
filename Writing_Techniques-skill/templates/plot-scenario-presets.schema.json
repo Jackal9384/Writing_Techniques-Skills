@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "笼统叙事类型预设结构校验",
+  "description": "data/plot-scenario-presets.json 的结构校验——10 种叙事类型的阶段目标/波动/冲突/节奏/陷阱。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["schema_version", "presets"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "description": { "type": "string" },
+    "presets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "match_hint", "wave", "stage_goals", "conflict_pattern", "rhythm", "traps"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "match_hint": { "type": "string" },
+          "wave": { "type": "array", "items": { "type": "string" } },
+          "structure": { "type": "string" },
+          "stage_goals": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          },
+          "conflict_pattern": {
+            "type": "object",
+            "required": ["foreshadowed", "unforeshadowed"],
+            "properties": {
+              "foreshadowed": { "type": "string" },
+              "unforeshadowed": { "type": "string" }
+            }
+          },
+          "rhythm": { "type": "string" },
+          "traps": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

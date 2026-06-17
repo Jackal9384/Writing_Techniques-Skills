@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "description": "成品输出校验检查项清单（机器规格）——标点扫描项/正文结构校验项/JSON 模式与引用校验项/结构化 MD 校验项。判定逻辑与修正动作保留在 SKILL.md（规则性内容），本文件提供检查项清单数据（扫描范围/适用条件/依据来源/豁免规则）。加载策略：首次调度完整读取一次进入工作记忆，之后按记忆执行不重复读取；规则变更/新会话重读。",
+  "punctuation_checks": [
+    { "id": "p01", "name": "句号", "source": "§4 + §A.1", "violation": "陈述句末尾漏句号；非陈述语气误用句号", "action": "补句号 / 改为对应语气标点" },
+    { "id": "p02", "name": "问号", "source": "§4 + §A.2", "violation": "非疑问句用问号；选择问句所有选项误加问号", "action": "改为句号 / 中间选项问号改逗号" },
+    { "id": "p03", "name": "叹号", "source": "§4", "violation": "无感叹语气滥用叹号；叠用超三个", "action": "改为句号 / 缩减至三个" },
+    { "id": "p04", "name": "逗号", "source": "§4 + §A.3", "violation": "长主语/句首状语后漏逗号；非提示性话语后误用冒号", "action": "补逗号 / 冒号改逗号" },
+    { "id": "p05", "name": "顿号", "source": "§4 + §A.4", "violation": "并列词语间漏顿号；概数间误用顿号；引号/书名号并列间多余顿号", "action": "补顿号 / 删顿号 / 删多余顿号" },
+    { "id": "p06", "name": "分号", "source": "§4 + §A.5", "violation": "非并列/非第一层分句间误用分号；含句号的分项仍用分号", "action": "改逗号 / 改句号" },
+    { "id": "p07", "name": "冒号", "source": "§4 + §A.6", "violation": "无停顿处用冒号；非提示性话语后误用", "action": "删冒号或改逗号" },
+    { "id": "p08", "name": "引号", "source": "§4 + §A.7 + §B.2.1", "violation": "内外标点位置错误；嵌套反序；段尾漏后引号", "action": "移标点至正确位置 / 换嵌套顺序 / 补后引号" },
+    { "id": "p09", "name": "破折号", "source": "§4 + §B.1.7 + §B.2.3", "violation": "断开分行；普通注释误用（应为括号）", "action": "合并至同行 / 改为括号" },
+    { "id": "p10", "name": "省略号", "source": "§4 + §A.9 + §B.2.4", "violation": "与等/等等同时使用；超量叠用；断开分行", "action": "删省略号保留等 / 缩减至标准 / 合并至同行" },
+    { "id": "p11", "name": "书名号", "source": "§4 + §A.13", "violation": "非作品名称套用；嵌套反序", "action": "改引号 / 换嵌套顺序" },
+    { "id": "p12", "name": "括号", "source": "§4 + §A.8 + §B.2.2", "violation": "句内括号未紧跟被注释词；行末多余标点", "action": "移至正确位置 / 删多余标点" },
+    { "id": "p13", "name": "连接号", "source": "§4 + §A.11", "violation": "数值范围误用短横；行首出现", "action": "改浪纹线 / 移至上行末" },
+    { "id": "p14", "name": "间隔号", "source": "§4 + §A.12", "violation": "和连接标题中仍用间隔号", "action": "删间隔号" },
+    { "id": "p15", "name": "分隔号", "source": "§4 + §A.14", "violation": "前后多余点号", "action": "删多余点号" },
+    { "id": "p16", "name": "横排位置", "source": "§5", "violation": "行首出现句内点号；行末出现前引号/前括号；破折号/省略号分行断开", "action": "点号移上行末 / 符号移下行首 / 合并同行" }
+  ],
+  "structure_checks": [
+    { "id": "s01", "name": "段落长度超标", "norm": "规范 1", "when": "prose_mode = narrative", "exempt_rule": "prose_mode = outline 时 2.1.1~2.1.5 全部跳过", "detail_ref": "SKILL.md 2.1.1" },
+    { "id": "s02", "name": "句末标点链接", "norm": "规范 1", "when": "prose_mode = narrative", "exempt_rule": "同 s01", "detail_ref": "SKILL.md 2.1.2" },
+    { "id": "s03", "name": "超短句堆叠", "norm": "规范 1", "when": "prose_mode = narrative", "exempt_rule": "同 s01", "detail_ref": "SKILL.md 2.1.3" },
+    { "id": "s04", "name": "无必要短句断裂", "norm": "规范 1", "when": "prose_mode = narrative", "exempt_rule": "同 s01", "detail_ref": "SKILL.md 2.1.4" },
+    { "id": "s05", "name": "对话叙述被句号截断", "norm": "规范 1 衍生", "when": "prose_mode = narrative", "exempt_rule": "同 s01", "detail_ref": "SKILL.md 2.1.5" },
+    { "id": "s06", "name": "破折号禁令", "norm": "规范 1.6", "when": "全部 prose（含 outline）", "exempt_rule": "全技能不免，不进入 exempted_norms，任何豁免声明无效", "detail_ref": "SKILL.md 2.1.6" },
+    { "id": "s07", "name": "贴标签式性格描写", "norm": "规范 2.2", "when": "全部 prose", "exempt_rule": "exempted_norms 含 规范2.2 时跳过；角色文件豁免（参考数据源）", "detail_ref": "SKILL.md 2.1.7" },
+    { "id": "s08", "name": "参考源原文复刻", "norm": "规范 5", "when": "全部 prose + 结构化 MD", "exempt_rule": "永不免除", "detail_ref": "SKILL.md 2.1.8" }
+  ],
+  "json_mode_checks": {
+    "project_info": {
+      "schema": "templates/project-info.schema.json",
+      "checks": [
+        { "name": "必填字段", "rule": "schema required（book_name/distribution/content_rating/length/genre/created_date/last_updated）必须存在", "action": "标记缺失字段" },
+        { "name": "枚举字段", "rule": "distribution/content_rating/length/polish_mode 等符合 schema enum", "action": "自动修正为 default 值" },
+        { "name": "volumes 结构", "rule": "含 enabled/multi_file/count/list 四键", "action": "标记并补默认结构" },
+        { "name": "卷号连续性", "rule": "volumes.list[].number 从 1 起连续递增", "action": "标记不连续处" },
+        { "name": "foreshadowing 条目", "rule": "匹配 {第N章}_{关键意思}_{待回收|第M章} 格式（schema pattern）", "action": "标记格式不符条目" }
+      ]
+    },
+    "writing_config": {
+      "schema": "templates/writing-config.schema.json",
+      "checks": [
+        { "name": "轨道结构", "rule": "大纲/正文 含 polish_mode/mode_description/last_updated 三键", "action": "标记缺失" },
+        { "name": "正文.polish_mode", "rule": "为 轻度/中度/重度", "action": "自动修正为 中度" },
+        { "name": "大纲.polish_mode", "rule": "为 轻度/中度/重度", "action": "自动修正为 轻度" },
+        { "name": "分卷覆盖", "rule": "key 对应 项目信息.json 存在的卷号", "action": "标记孤立卷覆盖" },
+        { "name": "角色语气条目", "rule": "{角色名} 含 说话风格/用词偏好/情绪表达/句式特征/口头禅 五子字段", "action": "标记缺失" }
+      ]
+    }
+  },
+  "json_reference_checks": [
+    { "name": "Prompt.md 章名", "rule": "对比 剧情大纲.md 是否存在对应章节", "action": "标记不存在于大纲中的章" },
+    { "name": "写作配置分卷覆盖", "rule": "对比 项目信息.json volumes.list", "action": "标记不存在卷号的覆盖项" },
+    { "name": "项目信息伏笔引用章号", "rule": "对比大纲中章号范围", "action": "标记超出范围的章号引用" }
+  ],
+  "md_checks": {
+    "character": {
+      "schema": "templates/character.schema.json",
+      "checks": [
+        { "name": "角色名", "rule": "必须为非空标题", "action": "标记" },
+        { "name": "性别/年龄", "rule": "应有明确字段", "action": "标记缺失" },
+        { "name": "性格描述", "rule": "允许行为展现或标签式（角色文件为参考数据，不强制间接化）", "action": "不干预" },
+        { "name": "与其他角色的关系", "rule": "提及另一角色名时对方文件应有对应关系条目", "action": "标记单向关系" },
+        { "name": "分卷目录存在性", "rule": "引用 大纲/人物/卷{N}/ 时确认对应卷目录存在", "action": "标记不存在目录" }
+      ]
+    },
+    "settings": {
+      "schema": "templates/settings.schema.json",
+      "checks": [
+        { "name": "章节结构", "rule": "应有明确的小标题分段", "action": "标记无结构文件" },
+        { "name": "世界观规则", "rule": "同一概念在不同段落中定义一致", "action": "标记矛盾定义" },
+        { "name": "引用章节号", "rule": "引用第X章揭示时该章号应在大纲中存在", "action": "标记无效引用" }
+      ]
+    },
+    "plot": {
+      "schema": "templates/plot.schema.json",
+      "checks": [
+        { "name": "章节编号连续性", "rule": "章号从 1 开始连续递增，无跳号", "action": "标记跳号位置" },
+        { "name": "卷章对应", "rule": "分卷模式下各卷 chapter_range 与实际章号范围一致", "action": "标记不一致" },
+        { "name": "每章必有描述", "rule": "每章不可为空描述", "action": "标记空章" },
+        { "name": "跨卷引用", "rule": "章内提及参见前文第X章时确认 X 存在", "action": "标记无效引用" }
+      ]
+    }
+  }
+}

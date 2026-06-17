@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "提示词增强内部模板数据结构校验",
+  "description": "data/prompt-template.json 的结构校验——提示词结构模板的段落定义（标题/内容/取值来源）。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["schema_version", "header", "sections"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "description": { "type": "string" },
+    "header": { "type": "string" },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "content", "source"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "content": { "type": "string" },
+          "source": { "type": "string" }
+        }
+      }
+    }
+  }
+}

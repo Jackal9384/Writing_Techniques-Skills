@@ -1,0 +1,28 @@
+{
+  "techniques_version": "1.0",
+  "description": "Combat 战斗专项技法注册表——主项六技法（t01-t06，按战斗类型选组）+ 战争子项（warfare 组 w01-w08，与主项不直接关联，全部软引导）。加载策略：SKILL.md 步骤 1 按战斗类型/战争子项查本表选组，只 Read 命中技法文件；首次调度完整读取本表一次，之后按工作记忆执行。",
+  "groups": {
+    "cold_weapon": ["t01", "t02", "t03"],
+    "bare_hand": ["t02", "t04", "t01", "t06"],
+    "ability": ["t03", "t06", "t02"],
+    "gunfight": ["t06", "t01", "t02"],
+    "mixed": ["t01", "t02", "t03", "t04", "t05", "t06"],
+    "warfare": ["w01", "w02", "w03", "w04", "w05", "w06", "w07", "w08"]
+  },
+  "techniques": [
+    { "id": "t01", "name": "动作节奏控制", "core": "出招↔受击↔反应↔喘息四拍循环；连续动作用逗号串联，每轮必有喘息拍", "groups": ["cold_weapon", "bare_hand", "gunfight", "mixed"], "path": "techniques/t01-action-rhythm.md" },
+    { "id": "t02", "name": "打击感描写", "core": "触感+声音+后果三维叠加；每击至少两维，关键打击三维全写，后果不重复", "groups": ["cold_weapon", "bare_hand", "ability", "gunfight", "mixed"], "path": "techniques/t02-impact.md" },
+    { "id": "t03", "name": "招式体系规范", "core": "命名风格世界观内自洽；首现全描写/复用简描写/变招半描写三阶段递进；空间关系起点/路径/终点三要素", "groups": ["cold_weapon", "ability", "mixed"], "path": "techniques/t03-technique-system.md" },
+    { "id": "t04", "name": "伤势递进", "core": "伤势逐级累积（L0-L4），每次受伤在后续动作体现影响；感官通道轮换", "groups": ["bare_hand", "mixed"], "path": "techniques/t04-injury-progression.md" },
+    { "id": "t05", "name": "胜负转折", "core": "转折点必有铺垫（技战术/心理/环境/消耗/信息五型），铺垫与转折隔一轮四拍；胜负后收束闭环", "groups": ["mixed"], "path": "techniques/t05-victory-turn.md" },
+    { "id": "t06", "name": "心理博弈", "core": "预判/诱导/误判/适应四层次；心理占比按战斗类型限幅；战斗中禁止贴性格标签（行为展现）", "groups": ["bare_hand", "ability", "gunfight", "mixed"], "path": "techniques/t06-psych-warfare.md" },
+    { "id": "w01", "name": "指挥部场景（全局视角切片）", "core": "地图/沙盘具象化战线，对话讲解全局，数字落地为画面；视角限于情报层", "groups": ["warfare"], "path": "techniques/warfare/w01-command-post.md" },
+    { "id": "w02", "name": "参谋部场景（计划层切片）", "core": "推演/争论呈现作战计划，战术思想点题；计划必须留漏洞为落差铺垫", "groups": ["warfare"], "path": "techniques/warfare/w02-staff-office.md" },
+    { "id": "w03", "name": "一线单位场景（执行层切片）", "core": "命令传递链 + 一线窄视角 + 等待与出发细节；与大视角对照", "groups": ["warfare"], "path": "techniques/warfare/w03-front-line.md" },
+    { "id": "w04", "name": "切片组合规则（以小见大核心）", "core": "多层级场景切片组合营造大场面；统一时间锚点；指挥部/参谋部短、一线长", "groups": ["warfare"], "path": "techniques/warfare/w04-slice-composition.md" },
+    { "id": "w05", "name": "计划-现实落差（变数）", "core": "战场现实打破计划（呼应 w02 预留漏洞）；坏消息沿一线→高层传递；多次落差递进", "groups": ["warfare"], "path": "techniques/warfare/w05-plan-reality-gap.md" },
+    { "id": "w06", "name": "战中个体时刻（引用 Combat 主项）", "core": "战争中的单挑/英雄时刻——战斗细节引用主项 t01-t06；带战争代价底色；篇幅克制", "groups": ["warfare"], "path": "techniques/warfare/w06-individual-moment.md" },
+    { "id": "w07", "name": "战争代价（残酷与损耗）", "core": "个体代价>数字；战后收束场景；幸存者状态；代价是后续剧情土壤", "groups": ["warfare"], "path": "techniques/warfare/w07-war-cost.md" },
+    { "id": "w08", "name": "战线推进感（空间与时间）", "core": "时间锚点（第几日）+空间锚点（参照物）呈现战线移动；拉锯与僵持；推进非线性", "groups": ["warfare"], "path": "techniques/warfare/w08-front-advance.md" }
+  ]
+}

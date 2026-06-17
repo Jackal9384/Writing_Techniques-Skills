@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0",
+  "description": "Write-Router 分发协议规格（机器规格）——各数据包字段定义与返回结构，供 LLM/Agent 直接消费执行。加载策略：首次调度完整读取一次进入工作记忆，后续按记忆执行不重复读取；规则变更/新会话重读。",
+  "protocols": [
+    {
+      "id": "to_core",
+      "target": "Core",
+      "direction": "Write-Router → Core（标准模式，general 段落组）",
+      "fields": [
+        { "name": "text", "required": true, "desc": "一般段落组文本（可能含多个不连续段落组，以分隔符标记）" },
+        { "name": "context.chapter", "required": true, "desc": "当前章号/章名" },
+        { "name": "context.volume", "required": true, "desc": "当前卷号或 null" },
+        { "name": "context.content_type", "required": true, "desc": "叙事文本/对话文本/描写文本/大纲文本" },
+        { "name": "context.prose_mode", "required": true, "desc": "narrative" },
+        { "name": "context.tension_level", "required": true, "desc": "当前阶段事件烈度 L1-L5（背景参考，不挂钩写作参数；来源见 Write-Router 步骤 2.3）" },
+        { "name": "context.chapter_type", "required": true, "desc": "当前章内容分类：daily/transition/mainline/combat/romance/climax/wrapup（事件安排建议，软引导）" },
+        { "name": "context.facts", "required": true, "desc": "事实约束块：{角色名: {字段名: 值}}，≤6 字段/角色，不含隐藏设定" },
+        { "name": "polish_mode", "required": true, "desc": "有效润色模式（已解析卷覆盖）" },
+        { "name": "polish_config", "required": true, "desc": "完整写作配置 JSON（含 user_style_enabled 开关）" }
+      ],
+      "returns": { "processed_text": "优化后文本", "changes_summary": "调整摘要" }
+    },
+    {
+      "id": "to_combat",
+      "target": "战斗描写专项",
+      "direction": "Write-Router → Combat（combat 段落组）",
+      "fields": [
+        { "name": "text", "required": true, "desc": "战斗段落组文本" },
+        { "name": "context.chapter", "required": true, "desc": "当前章号/章名" },
+        { "name": "context.volume", "required": true, "desc": "当前卷号或 null" },
+        { "name": "context.combat_type", "required": true, "desc": "冷兵器/徒手/超能力/枪械/混合型/warfare（warfare = 大规模/多场景战争，触发战争子项 warfare 组处理）" },
+        { "name": "context.detection_level", "required": true, "desc": "一级/二级/三级/四级" },
+        { "name": "context.tension_level", "required": true, "desc": "当前阶段事件烈度 L1-L5（背景参考，不挂钩写作参数）" },
+        { "name": "context.chapter_type", "required": true, "desc": "当前章内容分类：daily/transition/mainline/combat/romance/climax/wrapup（事件安排建议，软引导）" },
+        { "name": "context.involved_characters", "required": true, "desc": "段落组命中角色名数组" },
+        { "name": "context.facts", "required": true, "desc": "事实约束块：人物性格/人物简介/人物能力（战斗/魔力），≤6 字段/角色" },
+        { "name": "context.surrounding_text", "required": true, "desc": "前后各一段非战斗文本" },
+        { "name": "polish_mode", "required": true, "desc": "有效润色模式" },
+        { "name": "content_rating", "required": true, "desc": "项目信息中的 content_rating" }
+      ],
+      "returns": { "processed_text": "处理后的战斗段落文本", "combat_type": "战斗类型", "exempted_norms": "豁免规范数组", "key_changes": "关键调整说明", "combat_notes": "跨章节持续性信息" }
+    },
+    {
+      "id": "to_nsfw",
+      "target": "NSFW 专项写作",
+      "direction": "Write-Router → NSFW（nsfw 段落组）",
+      "fields": [
+        { "name": "text", "required": true, "desc": "NSFW 段落组文本" },
+        { "name": "context.chapter", "required": true, "desc": "当前章号/章名" },
+        { "name": "context.volume", "required": true, "desc": "当前卷号或 null" },
+        { "name": "context.scene_type", "required": true, "desc": "床戏/自慰/前戏/幻想/对话挑逗" },
+        { "name": "context.detection_level", "required": true, "desc": "一级/二级/三级" },
+        { "name": "context.tension_level", "required": true, "desc": "当前阶段事件烈度 L1-L5（背景参考，不挂钩写作参数）" },
+        { "name": "context.chapter_type", "required": true, "desc": "当前章内容分类：daily/transition/mainline/combat/romance/climax/wrapup（事件安排建议，软引导）" },
+        { "name": "context.involved_characters", "required": true, "desc": "段落组命中角色名数组" },
+        { "name": "context.facts", "required": true, "desc": "事实约束块：人物性格/人物简介/XP/三维/性特征/人物X能力，≤6 字段/角色" },
+        { "name": "context.character_tones", "required": true, "desc": "写作配置.json 角色语气映射 {角色名: {语气五要素}}" },
+        { "name": "context.surrounding_text", "required": true, "desc": "前后各一段非 NSFW 文本" },
+        { "name": "polish_mode", "required": true, "desc": "有效润色模式" },
+        { "name": "content_rating", "required": true, "desc": "项目信息中的 content_rating" }
+      ],
+      "returns": { "processed_text": "处理后的 NSFW 段落文本", "nsfw_tier_used": "大众级/限制级/解限级", "sexy_value": "N1-N5", "exempted_norms": "豁免规范数组", "key_changes": "关键替换/调整说明", "ooc_warnings": "OOC 边界标注（如有）" }
+    },
+    {
+      "id": "to_romance",
+      "target": "言情写作专项",
+      "direction": "Write-Router → Romance（romance 段落组）",
+      "fields": [
+        { "name": "text", "required": true, "desc": "言情段落组文本" },
+        { "name": "context.chapter", "required": true, "desc": "当前章号/章名" },
+        { "name": "context.volume", "required": true, "desc": "当前卷号或 null" },
+        { "name": "context.romance_type", "required": true, "desc": "暧昧/表白/约会/争吵/思念/混合型" },
+        { "name": "context.detection_level", "required": true, "desc": "一级/二级/三级" },
+        { "name": "context.tension_level", "required": true, "desc": "当前阶段事件烈度 L1-L5（背景参考，不挂钩写作参数）" },
+        { "name": "context.chapter_type", "required": true, "desc": "当前章内容分类：daily/transition/mainline/combat/romance/climax/wrapup（事件安排建议，软引导）" },
+        { "name": "context.involved_characters", "required": true, "desc": "段落组命中角色名数组" },
+        { "name": "context.facts", "required": true, "desc": "事实约束块：人物性格/人物简介/人物基本关系/人物语气，≤6 字段/角色" },
+        { "name": "context.surrounding_text", "required": true, "desc": "前后各一段非言情文本" },
+        { "name": "polish_mode", "required": true, "desc": "有效润色模式" },
+        { "name": "content_rating", "required": true, "desc": "项目信息中的 content_rating" }
+      ],
+      "returns": { "processed_text": "处理后的言情段落文本", "romance_type": "暧昧/表白/约会/争吵/思念/混合型", "exempted_norms": "豁免规范数组", "key_changes": "关键调整说明", "romance_notes": "跨章节持续性信息（关系阶段变化等）" }
+    },
+    {
+      "id": "to_long",
+      "target": "长篇专项",
+      "direction": "Write-Router → 长篇专项（伏笔/剧情回忆）",
+      "fields": [
+        { "name": "trigger_type", "required": true, "desc": "foreshadowing / recall / both" },
+        { "name": "chapter", "required": true, "desc": "当前章号" },
+        { "name": "volume", "required": true, "desc": "当前卷号或 null" },
+        { "name": "hints", "required": true, "desc": "检测到的伏笔提示/回忆需求数组——伏笔线索按 foreshadowing 格式 {第N章}_{≤50字关键意思}_{待回收} 产出" }
+      ],
+      "returns": { "foreshadowing_count": "伏笔登记数", "recall_summary": "剧情回忆摘要" }
+    },
+    {
+      "id": "to_proofreading",
+      "target": "成品输出校验",
+      "direction": "Write-Router → 成品输出校验（落盘）",
+      "fields": [
+        { "name": "type", "required": true, "desc": "prose / json / structured_md" },
+        { "name": "content", "required": true, "desc": "整合后的完整文本/待校验数据" },
+        { "name": "file_path", "required": true, "desc": "目标写入路径" },
+        { "name": "source_skill", "required": true, "desc": "调用方技能名（Write-Router 或创建技能）" },
+        { "name": "word_count", "required": false, "desc": "字数（prose 时）" },
+        { "name": "chapter", "required": false, "desc": "当前章号（prose 时）" },
+        { "name": "volume", "required": false, "desc": "卷号或 null" },
+        { "name": "content_type", "required": false, "desc": "叙事/对话/描写文本（prose 时）" },
+        { "name": "prose_mode", "required": false, "desc": "narrative / outline（outline 触发段落豁免）" },
+        { "name": "exempted_norms", "required": false, "desc": "豁免规范并集（专项技能覆盖项）" },
+        { "name": "metadata", "required": false, "desc": "专项元数据：combat/romance/nsfw/foreshadowing（按存在性填键，无则 null）" },
+        { "name": "expected_schema", "required": false, "desc": "JSON 模式校验目标：项目信息/写作配置/写作偏好（type: json 时）" },
+        { "name": "md_category", "required": false, "desc": "结构化 MD 分类：角色/设定/大纲（type: structured_md 时）" }
+      ],
+      "returns": "校验通过 → 落盘 / 不通过 → 修正后重检"
+    },
+    {
+      "id": "lightweight_in",
+      "target": "创建阶段技能",
+      "direction": "创建技能 → Write-Router（轻量模式）→ Core → 返回",
+      "fields": [
+        { "name": "mode", "required": true, "desc": "creation_phase（进入轻量分支 L0-L3）" },
+        { "name": "text", "required": true, "desc": "待加工字段文本" },
+        { "name": "context.source_skill", "required": true, "desc": "调用方创建技能名" },
+        { "name": "context.content_type", "required": true, "desc": "大纲文本" },
+        { "name": "context.field_name", "required": true, "desc": "字段名——须命中 templates/index.json protocols.field_name 或 character.schema core_polish_fields，Core 据此查 field_standards" },
+        { "name": "polish_mode", "required": true, "desc": "有效润色模式（出场卷独立配置 → 全局大纲）" },
+        { "name": "polish_config", "required": true, "desc": "完整写作配置 JSON" }
+      ],
+      "returns": { "processed_text": "加工后文本", "changes_summary": "调整摘要" },
+      "note": "Write-Router → Core 转发格式 = 除去 mode 字段后与入口一致；Core → Write-Router = 返回格式；Write-Router → 创建技能 = 与 Core 返回一致（调度透传，不做二次加工）"
+    }
+  ]
+}

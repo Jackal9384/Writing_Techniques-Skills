@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "项目信息",
+  "description": "项目基本信息的唯一权威来源——所有技能读取书名/分级等信息时均从此文件读取，禁止各自维护副本。模板库 V1.0。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["book_name", "distribution", "content_rating", "length", "genre", "created_date", "last_updated"],
+  "properties": {
+    "book_name": { "type": "string", "minLength": 1, "x_note": "书名——用户输入，不可为空" },
+    "distribution": { "type": "string", "enum": ["传播向", "个人向"], "x_note": "传播范围" },
+    "content_rating": { "type": "string", "enum": ["一般向", "NSFW"], "default": "一般向", "x_note": "内容分级——用户提及 NSFW 时设为 NSFW" },
+    "length": { "type": "string", "enum": ["随笔", "短篇", "短篇（连载）", "中篇", "长篇"], "x_note": "篇幅长度" },
+    "genre": { "type": "string", "minLength": 1, "x_note": "书籍种类——用户自由输入" },
+    "created_date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "x_note": "创建日期——自动填充" },
+    "last_updated": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "x_note": "最后更新——自动填充" },
+    "volumes": {
+      "type": "object",
+      "description": "分卷信息——由剧情编辑维护",
+      "required": ["enabled", "multi_file", "count", "list"],
+      "properties": {
+        "enabled": { "type": "boolean", "default": false, "x_note": "是否启用分卷——默认 false，剧情编辑分卷时写入" },
+        "multi_file": { "type": "boolean", "default": false, "x_note": "分卷是否多文件存储——true 时每卷独立 .md 文件" },
+        "count": { "type": "integer", "minimum": 0, "default": 0, "x_note": "分卷总数——分卷确认后更新" },
+        "list": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "object",
+            "required": ["number", "name", "chapter_range"],
+            "properties": {
+              "number": { "type": "integer", "minimum": 1, "x_note": "卷序号——从 1 开始，连续递增" },
+              "name": { "type": "string", "x_note": "卷名——用户自定义，如 第一卷：启程" },
+              "chapter_range": { "type": "string", "pattern": "^\\d+-\\d+$", "x_note": "章节范围——如 1-30" },
+              "word_count": { "type": "string", "x_note": "预计字数——如 约10万字" },
+              "polish_mode": { "type": "string", "enum": ["继承全局", "轻度", "中度", "重度"], "default": "继承全局", "x_note": "该卷润色模式" }
+            }
+          }
+        }
+      }
+    },
+    "nsfw_output_level": { "type": "string", "enum": ["", "限制级", "解限级"], "default": "", "x_note": "NSFW 输出词级别——预埋空值，由 NSFW 技能/提示词增强首次调用时写入", "x_writer": ["nsfw-skill", "prompt-ex"] },
+    "nsfw_character_tone": { "type": "string", "enum": ["", "保守", "中性", "放荡"], "default": "", "x_note": "NSFW 角色语气——预埋空值，由 NSFW 技能首次调用时写入", "x_writer": ["nsfw-skill"] },
+    "nsfw_tier_range": {
+      "type": "object",
+      "description": "NSFW 色色值域——由 NSFW 技能维护",
+      "required": ["global", "chapters"],
+      "properties": {
+        "global": { "type": "string", "default": "", "x_note": "全书色色值域——如 N3-N4，预埋空值" },
+        "chapters": { "type": "object", "default": {}, "x_note": "章节区域覆盖——如 {\"1-10\": \"N1-N2\"}，chapters 覆盖 > global" }
+      }
+    },
+    "tags": {
+      "type": "object",
+      "description": "作品标签（四维）——枚举定义见 data/tags-spec.json，由创建新书/快速创建收集",
+      "required": ["main"],
+      "properties": {
+        "main": { "type": "array", "minItems": 1, "maxItems": 1, "x_note": "主分类——至少选 1（tags-spec.main 枚举）" },
+        "theme": { "type": "array", "maxItems": 2, "x_note": "主题——至多选 2（tags-spec.theme 枚举）" },
+        "role": { "type": "array", "maxItems": 2, "x_note": "角色——至多选 2（tags-spec.role 枚举）" },
+        "plot": { "type": "array", "maxItems": 2, "x_note": "情节——至多选 2（tags-spec.plot 枚举）" }
+      },
+      "x_note": "标签全量存储（匹配判断/展示检索），不参与预设组合；Plot 辅助/自动模式按 tags 综合判断笼统叙事类型（data/plot-scenario-presets.json）"
+    },
+    "foreshadowing": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^第\\d+章_.+_(待回收|第\\d+章)$" },
+      "x_dynamic": {
+        "injector": "long-skill",
+        "insert_before": "last_updated",
+        "entry_format": "{第N章}_{≤50字关键意思}_{待回收|第M章}",
+        "constraints": [
+          "绝不修改 foreshadowing 以外的字段",
+          "绝不重排已有字段顺序",
+          "数组按放置时间排序"
+        ]
+      }
+    }
+  },
+  "x_merge_rule": {
+    "description": "跨技能写入协议：检测 → 读取 → 合并 → 写回",
+    "rule": "任何技能写入本文件前必须先读取现有内容，仅更新自身管辖字段，不得覆盖其他字段。预埋空值字段（nsfw_*）确保结构完整，后续技能可直接按 key 读取/写入，无需判断 key 是否存在。"
+  }
+}

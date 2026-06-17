@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NSFW 词汇表结构",
+  "description": "data/nsfw-vocabulary.json 的数据结构校验——词条为中心：每词条含 term + levels 三档；限制/解限级为三列语气分档（保守/中性/放荡），器具类可 direct 直称。模板库 V1.0。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["version", "terms", "ooc_rules"],
+  "properties": {
+    "version": { "type": "string" },
+    "terms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["term", "levels"],
+        "properties": {
+          "term": { "type": "string", "minLength": 1 },
+          "levels": {
+            "type": "object",
+            "required": ["大众级", "限制级", "解限级"],
+            "properties": {
+              "大众级": {
+                "type": "object",
+                "properties": {
+                  "words": { "type": "array", "items": { "type": "string" }, "x_note": "隐喻词列表，可为空（回避不写）" }
+                }
+              },
+              "限制级": { "$ref": "#/$defs/level" },
+              "解限级": { "$ref": "#/$defs/level" }
+            }
+          }
+        }
+      }
+    },
+    "ooc_rules": {
+      "type": "object",
+      "required": ["大众级", "限制级", "解限级"],
+      "properties": {
+        "大众级": { "type": "string" },
+        "限制级": { "type": "string" },
+        "解限级": { "type": "string" }
+      }
+    }
+  },
+  "$defs": {
+    "level": {
+      "type": "object",
+      "properties": {
+        "direct": { "type": "boolean", "x_note": "true = 直称使用不替换（器具/动作类）" },
+        "columns": {
+          "type": "object",
+          "properties": {
+            "保守": { "type": "array", "items": { "type": "string" } },
+            "中性": { "type": "array", "items": { "type": "string" } },
+            "放荡": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    }
+  },
+  "x_rules": [
+    "词条需覆盖三档（大众级/限制级/解限级），增删词条只改 data/nsfw-vocabulary.json 一处",
+    "限制级/解限级二选一：direct=true（直称）或 columns 三列",
+    "大众级 words 可为空数组（该词在隐喻中回避）",
+    "列值均为字符串数组，一个元素可含多个词（顿号分隔）"
+  ]
+}

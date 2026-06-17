@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "长篇专项伏笔规格结构校验",
+  "description": "data/foreshadowing-spec.json 的结构校验——条目格式/扫描关键词/阈值/提取正反例。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["schema_version", "entry_format", "scan_keywords", "thresholds", "extraction_examples"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "description": { "type": "string" },
+    "entry_format": {
+      "type": "object",
+      "required": ["pattern", "separator", "fields"],
+      "properties": {
+        "pattern": { "type": "string" },
+        "separator": { "type": "string" },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["position", "name", "rule"],
+            "properties": {
+              "position": { "type": "integer" },
+              "name": { "type": "string" },
+              "rule": { "type": "string" }
+            }
+          }
+        },
+        "insert_position": { "type": "string" },
+        "order_rule": { "type": "string" },
+        "a0_note": { "type": "string" }
+      }
+    },
+    "scan_keywords": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["keyword", "hit"],
+        "properties": {
+          "keyword": { "type": "string" },
+          "hit": { "type": "string" }
+        }
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "required": ["recycle_density", "diagnosis"],
+      "properties": {
+        "recycle_density": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["count", "level", "output"],
+            "properties": {
+              "count": { "type": "integer" },
+              "count_min": { "type": "integer" },
+              "level": { "type": "string" },
+              "output": { "type": "string" }
+            }
+          }
+        },
+        "diagnosis": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["condition", "output"],
+            "properties": {
+              "condition": { "type": "string" },
+              "output": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "extraction_examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["context", "wrong", "right"],
+        "properties": {
+          "context": { "type": "string" },
+          "wrong": { "type": "string" },
+          "right": { "type": "string" }
+        }
+      }
+    }
+  }
+}

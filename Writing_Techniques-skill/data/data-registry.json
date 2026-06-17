@@ -1,0 +1,21 @@
+{
+  "data_version": "1.0",
+  "description": "WT 数据文件注册表——大块数据（词汇表/模板文本）外置 data/ 存储，防止 SKILL.md 臃肿导致性能下降（V1.0 整体设计思路：细化技能模块的同时防止臃肿）。原则：数据性内容外置 data/，规则性内容留 SKILL.md。数据文件经本表注册、被技能引用才有效，禁止孤立文件。",
+  "files": [
+    { "id": "nsfw-vocabulary", "path": "data/nsfw-vocabulary.json", "version": "1.0", "type": "词汇数据", "schema": "templates/nsfw-vocabulary.schema.json", "consumer": ["nsfw-skill", "create-character"] },
+    { "id": "nsfw-config", "path": "data/nsfw-config.json", "version": "1.0", "type": "配置模板", "schema": null, "consumer": ["nsfw-skill"] },
+    { "id": "type-detection", "path": "data/type-detection.json", "version": "1.0", "type": "检测规则数据", "schema": "templates/type-detection.schema.json", "consumer": ["write-router"] },
+    { "id": "packet-schemas", "path": "data/packet-schemas.json", "version": "1.0", "type": "协议规格数据", "schema": "templates/packet-schemas.schema.json", "consumer": ["write-router"] },
+    { "id": "proofreading-checklist", "path": "data/proofreading-checklist.json", "version": "1.0", "type": "检查项规格数据", "schema": "templates/proofreading-checklist.schema.json", "consumer": ["proofreading"] },
+    { "id": "foreshadowing-spec", "path": "data/foreshadowing-spec.json", "version": "1.0", "type": "伏笔规格数据", "schema": "templates/foreshadowing-spec.schema.json", "consumer": ["long-skill"] },
+    { "id": "nsfw-principles-data", "path": "data/nsfw-principles-data.json", "version": "1.0", "type": "描写示例数据", "schema": null, "consumer": ["nsfw-skill"] },
+    { "id": "plot-wave-spec", "path": "data/plot-wave-spec.json", "version": "1.0", "type": "叙事质量规格数据", "schema": "templates/plot-wave-spec.schema.json", "consumer": ["plot-skill"] },
+    { "id": "character-interaction", "path": "data/character-interaction.json", "version": "1.0", "type": "交互引导数据", "schema": "templates/character-interaction.schema.json", "consumer": ["create-character"] },
+    { "id": "prompt-template", "path": "data/prompt-template.json", "version": "1.0", "type": "模板数据", "schema": "templates/prompt-template.schema.json", "consumer": ["prompt-ex"] },
+    { "id": "settings-editing-guide", "path": "data/settings-editing-guide.json", "version": "1.0", "type": "板块引导数据", "schema": "templates/settings-editing-guide.schema.json", "consumer": ["settings-skill"] },
+    { "id": "tags-spec", "path": "data/tags-spec.json", "version": "1.0", "type": "标签体系数据", "schema": "templates/tags-spec.schema.json", "consumer": ["create-book", "rebuild", "plot-skill"] },
+    { "id": "plot-scenario-presets", "path": "data/plot-scenario-presets.json", "version": "1.0", "type": "叙事类型预设数据", "schema": "templates/plot-scenario-presets.schema.json", "consumer": ["plot-skill"] },
+    { "id": "chapter-tension-guide", "path": "data/chapter-tension-guide.json", "version": "1.0", "type": "张力指引数据", "schema": "templates/chapter-tension-guide.schema.json", "consumer": ["write-router", "core-skill"] }
+  ],
+  "rule": "新增数据文件：在 data/ 下建文件 → 本表注册（id/path/version/type/consumer）→ 技能文档引用。禁止未注册引用与未引用注册。"
+}

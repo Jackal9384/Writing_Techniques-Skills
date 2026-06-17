@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Write-Router 分发协议规格校验",
+  "description": "data/packet-schemas.json 的结构校验——分发协议机器规格（字段定义/返回结构）。协议增删改在此约束。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["schema_version", "protocols"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "description": { "type": "string" },
+    "protocols": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "target", "direction", "fields", "returns"],
+        "properties": {
+          "id": { "type": "string" },
+          "target": { "type": "string" },
+          "direction": { "type": "string" },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "required", "desc"],
+              "properties": {
+                "name": { "type": "string" },
+                "required": { "type": "boolean" },
+                "desc": { "type": "string" }
+              }
+            }
+          },
+          "returns": { "type": ["object", "string"] },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

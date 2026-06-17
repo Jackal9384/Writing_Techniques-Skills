@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Plot 叙事质量增强规格校验",
+  "description": "data/plot-wave-spec.json 的结构校验——波动模型/四要素/冲突双类型/悬念密度/代价豁免。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["schema_version", "tension_levels", "wave_guidance", "plot_point_requirements", "conflict_types", "suspense_density", "cost_exemption"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "description": { "type": "string" },
+    "tension_levels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["level", "name", "desc"],
+        "properties": {
+          "level": { "type": "string" },
+          "name": { "type": "string" },
+          "desc": { "type": "string" }
+        }
+      }
+    },
+    "wave_guidance": {
+      "type": "object",
+      "required": ["mode", "rules"],
+      "properties": {
+        "mode": { "type": "string" },
+        "rules": { "type": "array", "items": { "type": "string" } },
+        "suggest_format": { "type": "string" }
+      }
+    },
+    "plot_point_requirements": {
+      "type": "object",
+      "required": ["mode", "four_elements", "violations"],
+      "properties": {
+        "mode": { "type": "string" },
+        "four_elements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "desc"],
+            "properties": {
+              "name": { "type": "string" },
+              "desc": { "type": "string" },
+              "subtypes": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "violations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "conflict_types": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["desc", "rule"],
+        "properties": {
+          "desc": { "type": "string" },
+          "rule": { "type": "string" },
+          "link": { "type": "string" }
+        }
+      }
+    },
+    "suspense_density": {
+      "type": "object",
+      "required": ["rule", "global"],
+      "properties": {
+        "rule": { "type": "string" },
+        "global": { "type": "string" }
+      }
+    },
+    "cost_exemption": {
+      "type": "object",
+      "required": ["default", "exempt"],
+      "properties": {
+        "default": { "type": "string" },
+        "exempt": { "type": "string" }
+      }
+    }
+  }
+}

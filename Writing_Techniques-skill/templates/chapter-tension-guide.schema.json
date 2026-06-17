@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "章节张力指引校验",
+  "description": "data/chapter-tension-guide.json 的结构校验——阶段级事件烈度（tension_levels L1-L5）+ 章节分类级二次规划（chapter_types 7 类）。张力等级只指导事件安排，不挂钩写作参数。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["schema_version", "tension_levels", "chapter_types"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "description": { "type": "string" },
+    "tension_levels": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "event_scale", "events", "note"],
+        "properties": {
+          "id": { "type": "string", "enum": ["L1", "L2", "L3", "L4", "L5"] },
+          "name": { "type": "string" },
+          "wave_name": { "type": "string", "description": "对应 plot-wave-spec.json 规划视角名称（刻度同源）" },
+          "event_scale": { "type": "string" },
+          "events": { "type": "array", "items": { "type": "string" } },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "chapter_types": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "match_hint", "events", "conflict_scale", "info_release", "foreshadow", "note"],
+        "properties": {
+          "id": { "type": "string", "enum": ["daily", "transition", "mainline", "combat", "romance", "climax", "wrapup"] },
+          "name": { "type": "string" },
+          "match_hint": { "type": "string" },
+          "events": { "type": "string" },
+          "conflict_scale": { "type": "string" },
+          "info_release": { "type": "string" },
+          "foreshadow": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

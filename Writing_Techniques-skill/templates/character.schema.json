@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "人物模板",
+  "description": "创建人物技能的人物条目模板——主要/次要/龙套三类共用。字段定义唯一来源，创建人物技能按此组装渲染。模板库 V1.0。",
+  "version": "1.0",
+  "templates": {
+    "main": { "name": "主要角色", "md_rendering": { "entry_format": "### {人物名称}", "separator": "---" } },
+    "minor": { "name": "次要角色", "md_rendering": { "entry_format": "### {人物名称}", "separator": "---" } },
+    "extra": { "name": "龙套角色", "md_rendering": { "entry_format": "**{人物名称}**：{简介，大致年龄，社会身份/地位，身形特点，性格，简单关系等}", "separator": "空行", "max_length": 60 } }
+  },
+  "fields": [
+    { "name": "人物名称", "type": "string", "required": true, "categories": ["main", "minor", "extra"], "md_format": "### {值}", "note": "姓名或代号" },
+    { "name": "性别", "type": "enum", "values": ["男", "女", "无"], "required": true, "categories": ["main", "minor"], "md_format": "- **性别**：{值}", "note": "非人类可为 无" },
+    { "name": "年龄/出生日期", "type": "string", "required": true, "categories": ["main", "minor"], "md_format": "- **年龄/出生日期**：{值}", "pattern": "XXXX年XX月XX日 / XX岁 / 约XX岁 / XXXX年XX月XX日（XX岁）" },
+    { "name": "身高/体重/身形特点", "type": "group", "required": true, "categories": ["main", "minor"], "md_format": "- **身高**：{身高}　**体重**：{体重}　**身形特点**：{身形特点}", "sub_fields": [
+      { "name": "身高", "type": "string", "unit": "cm" },
+      { "name": "体重", "type": "string", "unit": "kg" },
+      { "name": "身形特点", "type": "text" }
+    ] },
+    { "name": "出场卷", "type": "string", "required": false, "categories": ["main", "minor"], "md_format": "- **出场卷**：{值}", "values": ["第{N}卷", "\"第1—3卷\"", "\"第1、3卷\"", "全卷"], "note": "分卷项目自动出现" },
+    { "name": "XP", "type": "text", "required": false, "categories": ["main", "minor"], "md_format": "  - **XP**：{值}", "note": "性癖标签——NSFW 作品必填", "nsfw_conditional": true },
+    { "name": "三维", "type": "string", "required": false, "categories": ["main", "minor"], "md_format": "  - **三维**：{值}", "pattern": "XX_XX_XX", "note": "胸围_腰围_臀围——NSFW 作品必填", "nsfw_conditional": true },
+    { "name": "性特征", "type": "text", "required": false, "categories": ["main", "minor"], "md_format": "  - **性特征**：{值}", "note": "性相关身体特征——NSFW 作品必填", "nsfw_conditional": true },
+    { "name": "人物性格", "type": "text", "required": true, "categories": ["main", "minor"], "md_format": "- **人物性格**：{值}", "note": "行为+动机，禁止标签堆砌" },
+    { "name": "人物语气", "type": "group", "required": true, "categories": ["main", "minor"], "md_format": "- **人物语气**：{自动生成}\n  - 说话风格：{值}\n  - 用词偏好：{值}\n  - 情绪表达：{值}\n  - 句式特征：{值}\n  - 口头禅：{值}", "sub_fields": [
+      { "name": "说话风格", "type": "enum", "values": ["简洁有力", "啰嗦随性", "文雅含蓄", "直白奔放"] },
+      { "name": "用词偏好", "type": "enum", "values": ["口语化", "书面化", "粗犷", "文绉绉"] },
+      { "name": "情绪表达", "type": "enum", "values": ["外放", "内敛", "冷静", "激烈"] },
+      { "name": "句式特征", "type": "enum", "values": ["短句", "长句", "碎片化", "工整"] },
+      { "name": "口头禅", "type": "string", "required": false },
+      { "name": "nsfw_tone", "type": "enum", "values": ["保守", "中性", "放荡"], "required": false, "note": "仅 NSFW 作品" }
+    ], "note": "自动生成，同时双写入 写作配置.json → 角色语气.{人物名称}" },
+    { "name": "人物简介", "type": "text", "required": true, "categories": ["main", "minor"], "md_format": "- **人物简介**：{值}", "note": "出身、经历、定位" },
+    { "name": "人物基本关系", "type": "list", "required": false, "categories": ["main", "minor"], "md_format": "- **人物基本关系**：（可选）- {A与B：关系...}", "item_format": "{A}与{B}：{关系描述}", "note": "写入后触发双向关系同步（跨三文件搜索反向追加）" },
+    { "name": "人物能力", "type": "group", "required": false, "categories": ["main", "minor"], "md_format": "- **人物能力**：（可选，1~10）\n  - 战斗：{值} / 建造：{值} / 烹饪：{值} / 农艺：{值}\n  - 医疗：{值} / 社交：{值} / 智识：{值}\n  - 魔力：{值} / 魅力：{值}", "range": "1~10", "sub_fields": [
+      { "name": "战斗", "type": "integer", "range": "1~10", "note": "格斗、射击" },
+      { "name": "建造", "type": "integer", "range": "1~10", "note": "制作、建造、艺术加工" },
+      { "name": "烹饪", "type": "integer", "range": "1~10" },
+      { "name": "农艺", "type": "integer", "range": "1~10", "note": "驯兽、种植植物" },
+      { "name": "医疗", "type": "integer", "range": "1~10" },
+      { "name": "社交", "type": "integer", "range": "1~10" },
+      { "name": "智识", "type": "integer", "range": "1~10", "note": "领导、计策" },
+      { "name": "魔力", "type": "integer", "range": "1~10", "note": "元素操控、召唤术、结界术、炼金/炼丹、法术知识、魔力储量" },
+      { "name": "魅力", "type": "integer", "range": "1~10", "note": "含外貌描述" }
+    ] },
+    { "name": "人物X能力", "type": "group", "required": false, "categories": ["main", "minor"], "md_format": "  - **人物X能力**：（NSFW 可选，1~10）\n    - 耐力：{值}\n    - 耐受：{值}\n    - 攻击力：{值}\n    - 性欲望：{值}", "range": "1~10", "nsfw_conditional": true, "sub_fields": [
+      { "name": "耐力", "type": "integer", "range": "1~10", "note": "X事件下的耐力，是否容易高潮" },
+      { "name": "耐受", "type": "integer", "range": "1~10", "note": "在高潮后的生理状态" },
+      { "name": "攻击力", "type": "integer", "range": "1~10", "note": "攻方选项，是否容易把人弄高潮" },
+      { "name": "性欲望", "type": "integer", "range": "1~10", "note": "性欲强度，是否容易发情" }
+    ] },
+    { "name": "隐藏设定", "type": "text", "required": false, "categories": ["main", "minor"], "md_format": "- **隐藏设定**：{值}", "note": "仅角色本人或知情圈知晓的信息——身世/秘密/动机", "integration": { "type": "伏笔预登记", "target": "long-skill", "format": "{第N章}_{≤50字摘要}_{待回收}", "trigger": "字段非空" } }
+  ],
+  "conditional_blocks": [
+    { "when": "content_rating == NSFW", "add_fields": ["XP", "三维", "性特征"], "required": true, "note": "NSFW 作品必填——非 NSFW 时字段仍以可选项存在但不询问" },
+    { "when": "content_rating == NSFW", "add_fields": ["人物X能力"], "required": false }
+  ],
+  "integration": [
+    { "when": "隐藏设定 非空", "action": "调度长篇专项执行人物伏笔预登记（写入 项目信息.json.foreshadowing，来源标记为人物文件）" },
+    { "when": "写入 角色条目", "action": "人物语气 双写入 写作配置.json → 角色语气.{人物名称}" },
+    { "when": "人物基本关系 非空", "action": "双向关系同步——解析 {A}与{B}：{关系}，跨三文件搜索反向追加" }
+  ],
+  "x_notes": {
+    "field_order": "主要/次要条目字段顺序：人物名称(###) → 性别 → 年龄/出生日期 → 身高/体重/身形特点 → 出场卷 → [NSFW 块：XP/三维/性特征] → 人物性格 → 人物语气 → 人物简介 → 人物基本关系 → 人物能力 → [人物X能力] → 隐藏设定",
+    "nsfw_position": "NSFW 字段（XP/三维/性特征）插入在 出场卷 与 人物性格 之间；人物X能力 插入在 人物能力 之后",
+    "interaction_rounds": "交互轮次：基础信息 → 外貌 → 性格（+自动生成语气）→ 背景 → 可选；NSFW 第六轮插在第四轮后",
+    "core_polish_fields": "经 Write-Router 轻量模式 → Core 加工的文本字段：身形特点/人物性格/人物简介/人物语气（field_name 即字段名）；龙套为 龙套角色描述。NSFW 字段（XP/三维/性特征/X能力）不经 Core，改调度 NSFW 技能做词汇选择"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "checks_version": "1.0",
+  "description": "Plot 情节合理性校验注册表——六维度 + 执行流程，每维度独立文件按需加载（与 Core norms / NSFW techniques 同构）。加载策略：首次调度完整读取本表一次进入工作记忆，按模式（手动/辅助/自动）选组读取命中维度文件，之后按记忆执行不重复读取。",
+  "modes": {
+    "手动": ["c00", "c01", "c02", "c03", "c04", "c05", "c06"],
+    "辅助": ["c00", "c01", "c02", "c03", "c04", "c05", "c06"],
+    "自动": ["c00", "c01", "c02", "c03", "c04", "c05", "c06"]
+  },
+  "checks": [
+    { "id": "c00", "name": "数据源匹配", "core": "情节与角色文件/设定.md 精确匹配——强制最先执行，所有模式不豁免", "priority": 0, "path": "checks/c00-source.md" },
+    { "id": "c01", "name": "知识边界", "core": "角色认知限于可合理知晓范围（信息来源可追溯/秘密边界/时空在场）", "priority": 1, "path": "checks/c01-knowledge.md" },
+    { "id": "c02", "name": "专业能力边界", "core": "技能与知识必须与其人物设定一致（职业-知识匹配/等级约束/跨领域排斥）", "priority": 2, "path": "checks/c02-ability.md" },
+    { "id": "c03", "name": "人物行为一致性", "core": "关键决策与性格/关系一致（性格-行为/关系-互动）", "priority": 3, "path": "checks/c03-behavior.md" },
+    { "id": "c04", "name": "世界观一致性", "core": "剧情不得违反已设定规则（设定合规/缺口检测）", "priority": 4, "path": "checks/c04-world.md" },
+    { "id": "c05", "name": "叙事逻辑", "core": "因果链完整/伏笔有去有回/巧合受控", "priority": 5, "path": "checks/c05-narrative.md" },
+    { "id": "c06", "name": "叙事质量", "core": "波动软引导 + 剧情点四要素强制 + 冲突双类型 + 悬念密度 + 代价平衡（增强）", "priority": 6, "path": "checks/c06-quality.md" }
+  ],
+  "flow_path": "checks/flow.md"
+}

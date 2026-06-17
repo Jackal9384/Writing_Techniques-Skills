@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "设定模板",
+  "description": "设定.md 五板块结构——字段定义唯一来源，设定编辑技能按此组装渲染。模板库 V1.0。",
+  "version": "1.0",
+  "templates": {
+    "main": { "name": "设定.md", "md_rendering": { "entry_format": "# {书名} — 作品设定", "date_line": "> 最后更新：{YYYY年MM月DD日}" } }
+  },
+  "blocks": [
+    {
+      "id": "基本信息",
+      "required": true,
+      "md_format": "## 基本信息\n\n- **书名**：{书名}\n- **传播范围**：{传播向 / 个人向}\n- **内容分级**：{一般向 / NSFW}\n- **篇幅长度**：{随笔 / 短篇 / 短篇（连载） / 中篇 / 长篇}\n- **书籍种类**：{用户填写的种类}",
+      "fields": [
+        { "name": "书名", "type": "string", "sync": "项目信息.json.book_name" },
+        { "name": "传播范围", "type": "enum", "values": ["传播向", "个人向"], "sync": "项目信息.json.distribution" },
+        { "name": "内容分级", "type": "enum", "values": ["一般向", "NSFW"], "sync": "项目信息.json.content_rating", "note": "切换为 NSFW 时触发 NSFW 偏好配置" },
+        { "name": "篇幅长度", "type": "enum", "values": ["随笔", "短篇", "短篇（连载）", "中篇", "长篇"], "sync": "项目信息.json.length" },
+        { "name": "书籍种类", "type": "string", "sync": "项目信息.json.genre" }
+      ],
+      "note": "与 项目信息.json 双向同步——修改基本信息时同步更新 JSON"
+    },
+    {
+      "id": "简介",
+      "required": "至少填一个",
+      "md_format": "## 简介\n\n### 对外简介\n{面向读者的宣传简介}\n\n### 个人描述\n{作者自己对作品的理解和定位}",
+      "sub_blocks": [
+        { "name": "对外简介", "required": false, "length": "50-100字为宜", "field_name": "对外简介" },
+        { "name": "个人描述", "required": false, "field_name": "个人描述" }
+      ]
+    },
+    {
+      "id": "核心设定",
+      "required": "三要素至少一个",
+      "md_format": "### 核心设定 [必选]\n\n**人物**：{主要出场人物及角色定位}\n\n**世界**：{世界观一句话概括}\n\n**故事走向**：{主线故事的基本方向和核心冲突}",
+      "sub_blocks": [
+        { "name": "人物", "required": false, "field_name": "核心设定-人物" },
+        { "name": "世界", "required": false, "field_name": "核心设定-世界" },
+        { "name": "故事走向", "required": false, "field_name": "核心设定-故事走向" }
+      ]
+    },
+    {
+      "id": "世界观",
+      "required": "至少一个分类项",
+      "md_format": "### 世界观 [必选]\n\n**{分类名}**：\n{内容}",
+      "item_rules": {
+        "title_format": "**{分类名}**：",
+        "heading_level": "≤ h2（不加 ### / ####，与剧情大纲保持同级）",
+        "separator": "---",
+        "field_name": "世界观-{分类名}",
+        "management_cycle": ["添加", "修改", "删除", "重命名", "完成"],
+        "constraints": [
+          "零分类项时禁止完成",
+          "删除需用户确认（不可撤销）",
+          "重命名仅改标题、内容保留",
+          "每板块编辑完成即时保存并更新顶部日期行"
+        ]
+      }
+    },
+    {
+      "id": "次要设定",
+      "required": false,
+      "md_format": "### 次要设定 [可选]\n\n#### {分类}\n{内容}",
+      "item_rules": {
+        "title_format": "#### {分类}",
+        "field_name": "次要设定-{分类名}",
+        "note": "管理循环与世界观一致；清空后标注（暂不填写）"
+      }
+    }
+  ],
+  "core_rules": [
+    "世界观子项大标题使用 **{项}**： 加粗格式，不使用 ### / #### 标题——保持在 ≤ h2 结构层级下",
+    "子项之间以 --- 分割线分隔",
+    "基本信息与 项目信息.json 保持同步——修改基本信息时同步更新 JSON",
+    "设定文件是世界观约束的唯一来源——剧情编辑和人物创建均从此读取设定约束（单向：设定 → 剧情/人物）",
+    "一切设定文本写入前必经 Write-Router 轻量模式 → Core 加工（field_name 见各板块定义）；落盘必经成品输出校验（md_category: 设定）"
+  ]
+}

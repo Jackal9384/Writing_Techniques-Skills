@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "成品输出校验检查项清单结构校验",
+  "description": "data/proofreading-checklist.json 的结构校验——标点扫描项/结构校验项/JSON 模式与引用校验项/结构化 MD 校验项。检查项增删改在此约束。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["schema_version", "punctuation_checks", "structure_checks", "json_mode_checks", "json_reference_checks", "md_checks"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "description": { "type": "string" },
+    "punctuation_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "source", "violation", "action"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "source": { "type": "string" },
+          "violation": { "type": "string" },
+          "action": { "type": "string" }
+        }
+      }
+    },
+    "structure_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "norm", "when", "exempt_rule", "detail_ref"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "norm": { "type": "string" },
+          "when": { "type": "string" },
+          "exempt_rule": { "type": "string" },
+          "detail_ref": { "type": "string" }
+        }
+      }
+    },
+    "json_mode_checks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["schema", "checks"],
+        "properties": {
+          "schema": { "type": "string" },
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "rule", "action"],
+              "properties": {
+                "name": { "type": "string" },
+                "rule": { "type": "string" },
+                "action": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "json_reference_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "rule", "action"],
+        "properties": {
+          "name": { "type": "string" },
+          "rule": { "type": "string" },
+          "action": { "type": "string" }
+        }
+      }
+    },
+    "md_checks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["schema", "checks"],
+        "properties": {
+          "schema": { "type": "string" },
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "rule", "action"],
+              "properties": {
+                "name": { "type": "string" },
+                "rule": { "type": "string" },
+                "action": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WT 标签体系结构校验",
+  "description": "data/tags-spec.json 的结构校验——四维标签枚举（main/theme/role/plot）。项目 tags 字段取值须命中本表枚举。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["schema_version", "main", "theme", "role", "plot"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "description": { "type": "string" },
+    "main": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "desc"],
+        "properties": {
+          "id": { "type": "string" },
+          "desc": { "type": "string" }
+        }
+      }
+    },
+    "theme": { "type": "array", "items": { "type": "string" } },
+    "role": { "type": "array", "items": { "type": "string" } },
+    "plot": { "type": "array", "items": { "type": "string" } }
+  }
+}

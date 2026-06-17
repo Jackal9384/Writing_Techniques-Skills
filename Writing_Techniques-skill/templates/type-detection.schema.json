@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "类型检测数据",
+  "description": "Write-Router 内容类型检测数据文件结构校验——快速路由关键词（quick_route）与 NSFW三级/战斗四级/言情三级扫描命中数据（detections）。判定流程保留在 Write-Router SKILL.md，本 schema 只约束数据结构。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["schema_version", "quick_route", "detections"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "description": { "type": "string" },
+    "quick_route": {
+      "type": "object",
+      "description": "快速路由关键词——用户意图表达命中即全文标记为目标类型",
+      "required": ["nsfw", "combat", "warfare", "romance"],
+      "properties": {
+        "nsfw": { "type": "array", "items": { "type": "string" } },
+        "combat": { "type": "array", "items": { "type": "string" } },
+        "warfare": { "type": "array", "items": { "type": "string" } },
+        "romance": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "detections": {
+      "type": "object",
+      "required": ["nsfw", "combat", "warfare", "romance"],
+      "properties": {
+        "nsfw": { "$ref": "#/$defs/nsfw" },
+        "combat": { "$ref": "#/$defs/combat" },
+        "warfare": { "$ref": "#/$defs/warfare" },
+        "romance": { "$ref": "#/$defs/romance" }
+      }
+    }
+  },
+  "$defs": {
+    "direct": {
+      "type": "object",
+      "required": ["keywords", "note"],
+      "properties": {
+        "keywords": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": "string" }
+      }
+    },
+    "nsfw": {
+      "type": "object",
+      "required": ["level1_direct", "level2_scenes", "level3_contexts", "not_triggered"],
+      "properties": {
+        "level1_direct": { "$ref": "#/$defs/direct" },
+        "level2_scenes": { "type": "array", "items": { "type": "string" } },
+        "level3_contexts": { "type": "array", "items": { "type": "string" } },
+        "not_triggered": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "combat": {
+      "type": "object",
+      "required": ["level1_direct", "level2_scenes", "level3_contexts", "level4_boundary", "not_triggered"],
+      "properties": {
+        "level1_direct": {
+          "type": "object",
+          "required": ["weapon_verbs", "hand_verbs", "ability_verbs", "gun_verbs", "note"],
+          "properties": {
+            "weapon_verbs": { "type": "array", "items": { "type": "string" } },
+            "hand_verbs": { "type": "array", "items": { "type": "string" } },
+            "ability_verbs": { "type": "array", "items": { "type": "string" } },
+            "gun_verbs": { "type": "array", "items": { "type": "string" } },
+            "note": { "type": "string" }
+          }
+        },
+        "level2_scenes": { "type": "array", "items": { "type": "string" } },
+        "level3_contexts": { "type": "array", "items": { "type": "string" } },
+        "level4_boundary": { "type": "array", "items": { "type": "string" } },
+        "not_triggered": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "warfare": {
+      "type": "object",
+      "required": ["level1_scenes", "note"],
+      "properties": {
+        "level1_scenes": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": "string" }
+      }
+    },
+    "romance": {
+      "type": "object",
+      "required": ["level1_direct", "level2_scenes", "level3_contexts", "not_triggered"],
+      "properties": {
+        "level1_direct": {
+          "type": "object",
+          "required": ["confession", "ambiguous", "emotion_state", "note"],
+          "properties": {
+            "confession": { "type": "array", "items": { "type": "string" } },
+            "ambiguous": { "type": "array", "items": { "type": "string" } },
+            "emotion_state": { "type": "array", "items": { "type": "string" } },
+            "note": { "type": "string" }
+          }
+        },
+        "level2_scenes": { "type": "array", "items": { "type": "string" } },
+        "level3_contexts": { "type": "array", "items": { "type": "string" } },
+        "not_triggered": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

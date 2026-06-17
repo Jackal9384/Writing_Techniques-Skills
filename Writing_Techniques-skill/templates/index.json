@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "description": "WT 模板库注册表——设定类模板 schema 与跨技能协议的集中定义。schema 变更 = 版本升级（记录于 CHANGELOG）。各技能文档不再硬编码字段结构，统一引用本表与对应 schema 文件。",
+  "templates": [
+    { "id": "project-info", "path": "templates/project-info.schema.json", "version": "1.0", "aliases": ["项目信息"] },
+    { "id": "writing-config", "path": "templates/writing-config.schema.json", "version": "1.0", "aliases": ["写作配置"] },
+    { "id": "character", "path": "templates/character.schema.json", "version": "1.0", "aliases": ["角色", "人物"] },
+    { "id": "settings", "path": "templates/settings.schema.json", "version": "1.0", "aliases": ["设定"] },
+    { "id": "plot", "path": "templates/plot.schema.json", "version": "1.0", "aliases": ["大纲", "剧情大纲"] },
+    { "id": "user-style", "path": "templates/user-style.schema.json", "version": "1.0", "aliases": ["写作偏好"] }
+  ],
+  "protocols": {
+    "field_name": [
+      "人物语气",
+      "龙套角色描述",
+      "梗概",
+      "阶段目标",
+      "剧情要点",
+      "世界观-{分类名}",
+      "对外简介",
+      "个人描述",
+      "核心设定-人物",
+      "核心设定-世界",
+      "核心设定-故事走向",
+      "次要设定-{分类名}"
+    ],
+    "md_category": ["角色", "设定", "大纲"],
+    "expected_schema": ["项目信息", "写作配置", "写作偏好"]
+  },
+  "note": "别名（aliases）用于跨技能按名称匹配：成品输出校验按 expected_schema/md_category 匹配模板；各创建技能按 id 引用。路径均相对技能根目录 Writing_Techniques-skill/。"
+}

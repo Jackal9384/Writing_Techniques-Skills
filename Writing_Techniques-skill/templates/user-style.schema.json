@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "写作偏好库",
+  "description": "{书名}/大纲/写作偏好.json 的结构——用户个人写作习惯词条库。按用户习惯与惯性方向做个人单向优化：库 → 文本，加工绝不反向修改库（防漂移）。生效优先级与 CLAUDE.md 机制一致（项目级偏好 > 用户级习惯）。项目数据文件（随项目走，不进技能包 data-registry），经成品输出校验落盘。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["schema_version", "entries"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "last_updated": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "entries": {
+      "type": "array",
+      "description": "个人偏好词条——显式采集：① 用户主动提出（帮我记一下…）② 人工介入修改 AI 产出时询问确认（确认才写，拒绝不重问）",
+      "items": {
+        "type": "object",
+        "required": ["id", "dimension", "level", "rule", "scope"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^e\\d{3}$" },
+          "dimension": { "type": "string", "enum": ["用词", "句式", "标点", "称呼术语", "内容避讳", "节奏"] },
+          "level": { "type": "string", "enum": ["禁止", "偏好", "轻微"], "x_note": "禁止=硬约束（等同规范执行）；偏好=优先替代；轻微=方向性引导" },
+          "rule": { "type": "string", "description": "具体规则，如：避免使用'竟然'，改用'没想到'" },
+          "scope": { "type": "string", "enum": ["全文本", "对话", "描写", "叙事"], "default": "全文本" },
+          "example": { "type": "string" }
+        }
+      }
+    }
+  },
+  "x_note": "关闭方式：写作配置.json.user_style_enabled = false（设定编辑维护）→ 全程不读取不询问"
+}

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "写作配置",
+  "description": "润色模式的唯一权威来源——所有技能按轨道读取对应模式。模板库 V1.0。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["大纲", "正文"],
+  "properties": {
+    "大纲": { "$ref": "#/$defs/track", "x_note": "大纲轨——人物创建/剧情编辑/设定编辑等大纲类文本（全局默认）" },
+    "正文": { "$ref": "#/$defs/track", "x_note": "正文轨——基础写作辅助/NSFW 等正文类文本（全局默认），初始与大纲相同" },
+    "分卷": {
+      "type": "object",
+      "default": {},
+      "x_note": "分卷润色覆盖项，key 为卷号字符串（如 \"1\"）。不存在某卷号 → 继承 大纲.polish_mode；存在 → 使用覆盖值。由剧情编辑在分卷时按需填充",
+      "additionalProperties": { "$ref": "#/$defs/track" }
+    },
+    "角色语气": {
+      "type": "object",
+      "default": {},
+      "x_note": "由创建人物动态添加——角色语气双写目标（另写入角色 MD 条目「人物语气」字段）。设定编辑只读总览展示此段",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["说话风格", "用词偏好", "情绪表达", "句式特征", "口头禅"],
+        "properties": {
+          "说话风格": { "type": "string" },
+          "用词偏好": { "type": "string" },
+          "情绪表达": { "type": "string" },
+          "句式特征": { "type": "string" },
+          "口头禅": { "type": "string" },
+          "nsfw_tone": { "type": "string", "enum": ["保守", "中性", "放荡"], "x_note": "仅 NSFW 作品" }
+        }
+      }
+    },
+    "user_style_enabled": {
+      "type": "boolean",
+      "default": false,
+      "x_note": "写作偏好库开关——创建新书/快速创建时询问是否启用（注明影响 Token 消耗）。true 时 Core 加工读 大纲/写作偏好.json 做个人方向优化；false 时全程不读取不询问。由创建新书/快速创建/设定编辑维护"
+    }
+  },
+  "$defs": {
+    "track": {
+      "type": "object",
+      "required": ["polish_mode", "mode_description", "last_updated"],
+      "properties": {
+        "polish_mode": { "type": "string", "enum": ["轻度", "中度", "重度"] },
+        "mode_description": {
+          "type": "string",
+          "x_enum_map": {
+            "轻度": "保留用户原话，仅书面化、规范化书写",
+            "中度": "小幅优化用户原话（改动幅度 ≤60%）",
+            "重度": "仅保留原意，完全改写、润色、扩写内容"
+          }
+        },
+        "last_updated": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }
+      }
+    }
+  },
+  "x_merge_rule": {
+    "description": "跨技能写入协议：检测 → 读取 → 合并 → 写回",
+    "rule": "任何技能写入本文件前必须先读取现有内容，仅更新自身管辖字段（如创建人物只写 角色语气.{角色名}），不得覆盖其他字段。"
+  }
+}

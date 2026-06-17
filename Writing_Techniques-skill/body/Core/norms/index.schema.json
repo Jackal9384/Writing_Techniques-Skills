@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Core 规范注册表结构校验",
+  "description": "body/Core/norms/index.json 的结构校验——id 唯一性、必填字段、组引用合法性由消费方（引擎）按本 schema 校验。新增规范注册后如违反结构即报错。",
+  "version": "1.1",
+  "type": "object",
+  "required": ["norms_version", "description", "groups", "norms"],
+  "properties": {
+    "norms_version": { "type": "string" },
+    "description": { "type": "string" },
+    "groups": {
+      "type": "object",
+      "description": "组定义——键为组名（通用/叙事/描写/对话/大纲），值为规范 id 数组。组内 id 必须存在于 norms 数组",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    },
+    "norms": {
+      "type": "array",
+      "description": "规范条目——priority 为执行顺序（升序），apply 为内容类型适用矩阵",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "short", "path", "priority", "apply"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "short": { "type": "string" },
+          "path": { "type": "string" },
+          "priority": { "type": "integer" },
+          "apply": {
+            "type": "object",
+            "required": ["叙事", "大纲", "对话", "描写"],
+            "properties": {
+              "叙事": { "type": "string", "enum": ["✓", "△", "✕"] },
+              "大纲": { "type": "string", "enum": ["✓", "△", "✕"] },
+              "对话": { "type": "string", "enum": ["✓", "△", "✕"] },
+              "描写": { "type": "string", "enum": ["✓", "△", "✕"] }
+            }
+          }
+        }
+      }
+    }
+  }
+}
