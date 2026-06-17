@@ -244,7 +244,7 @@ description: 创建新书项目结构。当用户说"创建新书"、"开新书"
 | `volumes.multi_file` | 分卷是否使用多文件存储 | `true` / `false` | 默认 `false`，用户可选；`true` 时每卷独立 `.md` 文件 |
 | `volumes.count` | 分卷总数 | 整数 | 默认 `0`，分卷确认后更新 |
 | `volumes.list` | 各卷详细信息数组 | 对象数组 | 默认 `[]`，每卷含 `number`/`name`/`chapter_range`/`word_count`/`polish_mode` |
-| `nsfw_output_level` | NSFW输出词级别 | `优雅级` / `直白级` | 默认空字符串——无 NSFW 内容时不填，由 NSFW 技能首次调用时写入 |
+| `nsfw_output_level` | NSFW输出词级别 | `限制级` / `解限级` / `直白级` | 默认空字符串——无 NSFW 内容时不填，由 NSFW 技能首次调用时写入 |
 | `nsfw_character_tone` | NSFW角色语气 | `保守` / `中性` / `放荡` | 默认空，由 NSFW 技能首次调用时写入 |
 | `nsfw_tier_range.global` | 全书色色值域 | 如 `"N3-N4"` | 默认空，由 NSFW 技能首次调用时写入 |
 | `nsfw_tier_range.chapters` | 章节区域覆盖 | 如 `{"1-10": "N1-N2"}` | 默认 `{}`，由用户后续配置 |
@@ -405,7 +405,7 @@ description: 创建新书项目结构。当用户说"创建新书"、"开新书"
    也可指定章节区域（如：第1-10章 N1-N2，第11-30章 N3-N4）
 
 ② 本书倾向什么级别的 NSFW 输出词？
-   A. 词汇开放度：优雅级（优雅代称）→ 直白级（直白露骨）
+   A. 输出词级别：限制级（优雅代称）→ 解限级（兼顾色情感与观感）→ 直白级（直白露骨）
    B. 角色语气：保守（文雅含蓄）→ 中性（自然直白）→ 放荡（粗俗刺激）
 
 （均可跳过，跳过后由 LLM 后续自行判断；随时可说 /nsfw-config 重新配置）
