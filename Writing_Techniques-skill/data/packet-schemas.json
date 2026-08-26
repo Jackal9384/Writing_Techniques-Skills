@@ -15,6 +15,7 @@
         { "name": "context.tension_level", "required": true, "desc": "当前阶段事件烈度 L1-L5（背景参考，不挂钩写作参数；来源见 Write-Router 步骤 2.3）" },
         { "name": "context.chapter_type", "required": true, "desc": "当前章内容分类：daily/transition/mainline/combat/romance/climax/wrapup（事件安排建议，软引导）" },
         { "name": "context.facts", "required": true, "desc": "事实约束块：{角色名: {字段名: 值}}，≤6 字段/角色，不含隐藏设定" },
+        { "name": "context.glossary", "required": false, "desc": "术语约束块：来自 大纲/术语表.json，{术语: {定义, 禁用词[]}}——写正文时遇禁用混指词自动纠偏" },
         { "name": "polish_mode", "required": true, "desc": "有效润色模式（已解析卷覆盖）" },
         { "name": "polish_config", "required": true, "desc": "完整写作配置 JSON（含 user_style_enabled 开关）" }
       ],
@@ -34,6 +35,7 @@
         { "name": "context.chapter_type", "required": true, "desc": "当前章内容分类：daily/transition/mainline/combat/romance/climax/wrapup（事件安排建议，软引导）" },
         { "name": "context.involved_characters", "required": true, "desc": "段落组命中角色名数组" },
         { "name": "context.facts", "required": true, "desc": "事实约束块：人物性格/人物简介/人物能力（战斗/魔力），≤6 字段/角色" },
+        { "name": "context.glossary", "required": false, "desc": "术语约束块：来自 大纲/术语表.json，{术语: {定义, 禁用词[]}}——写正文时遇禁用混指词自动纠偏" },
         { "name": "context.surrounding_text", "required": true, "desc": "前后各一段非战斗文本" },
         { "name": "polish_mode", "required": true, "desc": "有效润色模式" },
         { "name": "content_rating", "required": true, "desc": "项目信息中的 content_rating" }
@@ -54,6 +56,7 @@
         { "name": "context.chapter_type", "required": true, "desc": "当前章内容分类：daily/transition/mainline/combat/romance/climax/wrapup（事件安排建议，软引导）" },
         { "name": "context.involved_characters", "required": true, "desc": "段落组命中角色名数组" },
         { "name": "context.facts", "required": true, "desc": "事实约束块：人物性格/人物简介/XP/三维/性特征/人物X能力，≤6 字段/角色" },
+        { "name": "context.glossary", "required": false, "desc": "术语约束块：来自 大纲/术语表.json，{术语: {定义, 禁用词[]}}——写正文时遇禁用混指词自动纠偏" },
         { "name": "context.character_tones", "required": true, "desc": "写作配置.json 角色语气映射 {角色名: {语气五要素}}" },
         { "name": "context.surrounding_text", "required": true, "desc": "前后各一段非 NSFW 文本" },
         { "name": "polish_mode", "required": true, "desc": "有效润色模式" },
@@ -75,6 +78,7 @@
         { "name": "context.chapter_type", "required": true, "desc": "当前章内容分类：daily/transition/mainline/combat/romance/climax/wrapup（事件安排建议，软引导）" },
         { "name": "context.involved_characters", "required": true, "desc": "段落组命中角色名数组" },
         { "name": "context.facts", "required": true, "desc": "事实约束块：人物性格/人物简介/人物基本关系/人物语气，≤6 字段/角色" },
+        { "name": "context.glossary", "required": false, "desc": "术语约束块：来自 大纲/术语表.json，{术语: {定义, 禁用词[]}}——写正文时遇禁用混指词自动纠偏" },
         { "name": "context.surrounding_text", "required": true, "desc": "前后各一段非言情文本" },
         { "name": "polish_mode", "required": true, "desc": "有效润色模式" },
         { "name": "content_rating", "required": true, "desc": "项目信息中的 content_rating" }

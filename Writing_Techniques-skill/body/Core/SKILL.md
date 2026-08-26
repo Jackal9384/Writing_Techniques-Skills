@@ -41,7 +41,8 @@ description: 纯文本优化引擎——接收Write-Router传入的已分类文�
     "volume": "{当前卷号或 null}",
     "content_type": "{叙事文本/对话文本/描写文本/大纲文本}",
     "prose_mode": "narrative",
-    "character_tones": { "{角色名}": "{写作配置.json→角色语气}" }
+    "character_tones": { "{角色名}": "{写作配置.json→角色语气}" },
+    "glossary": { "{术语}": { "definition": "{定义}", "forbidden": ["{禁用词}"] } }
   },
   "polish_mode": "{轻度/中度/重度}",
   "polish_config": { "{完整的写作配置 JSON}" }
@@ -77,6 +78,7 @@ description: 纯文本优化引擎——接收Write-Router传入的已分类文�
 4. **按需加载**：按 `priority` 升序，只 Read 命中的规范文件（`norms/{path}`）。**会话内已读规范不重复读取**
 5. **逐条过检**：按各规范文件内的"判定规则 + 检测标准"逐条执行，发现违规立即修正；命中字段标准的先应用 `special` 要求
 6. **原则〇 前置**：全部规范之上受总原则〇（画面优先于过程）统领——执行任何规范前先过原则〇，正文段落不解释过程/原理
+7. **术语纠偏**（数据包含 `context.glossary` 时）：对照术语表，凡文本出现某术语的 `forbidden` 禁用混指词 → 替换为准确定义（如「吞噬」→「毁灭」）。术语约束为硬约束，优先于风格偏好，不因润色而保留禁用词
 
 执行顺序 = priority 升序（n01 → n15 → n16 → n17 → n18 → n19 → n02 → n22 → n23 → n03 → n04 → n05）。
 

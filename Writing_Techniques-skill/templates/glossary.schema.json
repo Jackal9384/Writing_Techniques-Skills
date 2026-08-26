@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "术语表",
+  "description": "项目级术语表（大纲/术语表.json）——核心术语的准确定义与禁用混指词，写正文时随数据包分发强制生效。字段定义唯一来源。模板库 V1.0。",
+  "version": "1.0",
+  "type": "object",
+  "required": ["schema_version", "terms"],
+  "properties": {
+    "schema_version": { "type": "string", "description": "术语表结构版本" },
+    "terms": {
+      "type": "array",
+      "description": "术语条目数组",
+      "items": {
+        "type": "object",
+        "required": ["term", "definition"],
+        "properties": {
+          "term": { "type": "string", "description": "术语名" },
+          "definition": { "type": "string", "description": "准确定义" },
+          "forbidden": { "type": "array", "items": { "type": "string" }, "description": "禁用混指词/表述——写正文时遇此自动纠偏" },
+          "note": { "type": "string", "description": "补充说明（区分要点/易错点）" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "x_notes": {
+    "location": "项目级文件，存 大纲/术语表.json（与 写作偏好.json 平级），schema 由模板库提供",
+    "trigger": "设定编辑「术语表」板块维护；Write-Router 写正文前读取并随数据包分发 context.glossary",
+    "effect": "Core 接收 context.glossary，遇 forbidden 词自动纠偏（如「吞噬」→「毁灭」）"
+  }
+}

@@ -7,7 +7,8 @@
     { "id": "character", "path": "templates/character.schema.json", "version": "1.0", "aliases": ["角色", "人物"] },
     { "id": "settings", "path": "templates/settings.schema.json", "version": "1.0", "aliases": ["设定"] },
     { "id": "plot", "path": "templates/plot.schema.json", "version": "1.0", "aliases": ["大纲", "剧情大纲"] },
-    { "id": "user-style", "path": "templates/user-style.schema.json", "version": "1.0", "aliases": ["写作偏好"] }
+    { "id": "user-style", "path": "templates/user-style.schema.json", "version": "1.0", "aliases": ["写作偏好"] },
+    { "id": "glossary", "path": "templates/glossary.schema.json", "version": "1.0", "aliases": ["术语表"] }
   ],
   "protocols": {
     "field_name": [
@@ -22,10 +23,11 @@
       "核心设定-人物",
       "核心设定-世界",
       "核心设定-故事走向",
-      "次要设定-{分类名}"
+      "次要设定-{分类名}",
+      "设定铁律"
     ],
     "md_category": ["角色", "设定", "大纲"],
-    "expected_schema": ["项目信息", "写作配置", "写作偏好"]
+    "expected_schema": ["项目信息", "写作配置", "写作偏好", "术语表"]
   },
   "note": "别名（aliases）用于跨技能按名称匹配：成品输出校验按 expected_schema/md_category 匹配模板；各创建技能按 id 引用。路径均相对技能根目录 Writing_Techniques-skill/。"
 }

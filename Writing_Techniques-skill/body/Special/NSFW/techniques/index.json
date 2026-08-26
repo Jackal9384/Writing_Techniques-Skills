@@ -1,0 +1,33 @@
+{
+  "techniques_version": "1.0",
+  "description": "NSFW 十八项场景构建技法注册表——每项独立文件，按适用场景选组读取（与 Core norms 同构）。加载策略：SKILL.md 处理流程按 scene_type 查本表选技法，只 Read 命中文件；首次调度完整读取本表一次，之后按工作记忆执行。",
+  "scenes": {
+    "床戏": ["t01", "t02", "t03", "t04", "t05", "t06", "t07", "t08", "t09", "t10", "t12", "t15", "t17", "t18"],
+    "自慰": ["t03", "t08", "t12", "t15", "t18"],
+    "前戏": ["t01", "t02", "t03"],
+    "幻想": ["t16"],
+    "对话挑逗": ["t17"],
+    "事后": ["t06", "t11"],
+    "通用": ["t01", "t04", "t05", "t07", "t09", "t10", "t11", "t13", "t14", "t16"]
+  },
+  "techniques": [
+    { "id": "t01", "name": "强制暴露与羞耻张力", "core": "非私密空间被迫暴露，随时可能被发现的恐惧放大性张力；羞耻感只点一次", "scenes": ["前戏", "床戏", "通用"], "path": "techniques/t01-exposure.md" },
+    { "id": "t02", "name": "脱衣仪式化", "core": "脱衣拆解为层级递进仪式，每层释放一个部位，全裸定格收束", "scenes": ["前戏", "床戏"], "path": "techniques/t02-stripping.md" },
+    { "id": "t03", "name": "延迟满足与等待煎熬", "core": "性行为前插入长时间等待，三视角循环递进（外部威胁/身体反应/心理回放）", "scenes": ["前戏", "自慰", "床戏"], "path": "techniques/t03-delay.md" },
+    { "id": "t04", "name": "疼痛与快感交织", "core": "局部可控疼痛与快感共存，事后身体标记持续暗示；尺度随档位递进", "scenes": ["床戏", "通用"], "path": "techniques/t04-pain-blend.md" },
+    { "id": "t05", "name": "外部威胁催化", "core": "性行为中外部威胁持续到场，情欲紧张+生存紧张叠加", "scenes": ["床戏", "通用"], "path": "techniques/t05-threat.md" },
+    { "id": "t06", "name": "事后残留感描写", "core": "身体残留比过程有余韵；高潮后身体定格（静物式）", "scenes": ["床戏", "事后"], "path": "techniques/t06-afterglow.md" },
+    { "id": "t07", "name": "束缚与行动限制", "core": "物理束缚使身体被迫敞开，限制→暴露→被迫承受递进", "scenes": ["床戏", "通用"], "path": "techniques/t07-bondage.md" },
+    { "id": "t08", "name": "强制高潮控制（边缘控制）", "core": "禁止高潮反复推至临界，蓄积后溃堤；规则+违约游戏高阶玩法", "scenes": ["床戏", "自慰"], "path": "techniques/t08-edging.md" },
+    { "id": "t09", "name": "着装反差", "core": "部分穿着身份象征衣物，半圣洁半淫靡；衣物穿回是反向张力循环", "scenes": ["床戏", "通用"], "path": "techniques/t09-attire.md" },
+    { "id": "t10", "name": "计数节奏控制", "core": "数数作为节奏框架，数字=刺激条件反射，加速/减速控制情绪曲线", "scenes": ["床戏", "通用"], "path": "techniques/t10-counting.md" },
+    { "id": "t11", "name": "事后温柔反差", "core": "粗暴后反差式温柔动作，笨拙认真的照顾行为情感力量最强", "scenes": ["事后", "通用"], "path": "techniques/t11-gentle.md" },
+    { "id": "t12", "name": "道具掌控", "core": "玩具作支配工具，节奏/强度/终点三控制维度；道具来源翻转是心理冲击", "scenes": ["自慰", "床戏"], "path": "techniques/t12-props.md" },
+    { "id": "t13", "name": "权力觉醒时刻", "core": "支配方瞬间意识到完全掌控力，一句干净判断+行为转变", "scenes": ["通用"], "path": "techniques/t13-power.md" },
+    { "id": "t14", "name": "制度化支配", "core": "支配关系嵌入制度/职业框架，偶然→制造→固定日程三阶段", "scenes": ["通用"], "path": "techniques/t14-institutional.md" },
+    { "id": "t15", "name": "多轮连续高潮递进", "core": "每次高潮不同质地（炸裂/深沉/溃堤三型），身体状态逐轮递进", "scenes": ["床戏", "自慰"], "path": "techniques/t15-multi-orgasm.md" },
+    { "id": "t16", "name": "偷窥视角与无意识暴露", "core": "完全不知被看的私密暴露，构图感画面+观看者失控放大色情感", "scenes": ["幻想", "通用"], "path": "techniques/t16-voyeur.md" },
+    { "id": "t17", "name": "双轨并行叙事", "core": "性刺激进行中处理无关事务，反差制造张力；功能维持是核心看点", "scenes": ["床戏", "对话挑逗"], "path": "techniques/t17-dual-track.md" },
+    { "id": "t18", "name": "异位触发与身体连锁", "core": "远距离部位刺激引发性器官反应，传导路径一笔画过，反应先于意识", "scenes": ["床戏", "自慰"], "path": "techniques/t18-remote-trigger.md" }
+  ]
+}

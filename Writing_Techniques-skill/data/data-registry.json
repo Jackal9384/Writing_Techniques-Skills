@@ -15,7 +15,8 @@
     { "id": "settings-editing-guide", "path": "data/settings-editing-guide.json", "version": "1.0", "type": "板块引导数据", "schema": "templates/settings-editing-guide.schema.json", "consumer": ["settings-skill"] },
     { "id": "tags-spec", "path": "data/tags-spec.json", "version": "1.0", "type": "标签体系数据", "schema": "templates/tags-spec.schema.json", "consumer": ["create-book", "rebuild", "plot-skill"] },
     { "id": "plot-scenario-presets", "path": "data/plot-scenario-presets.json", "version": "1.0", "type": "叙事类型预设数据", "schema": "templates/plot-scenario-presets.schema.json", "consumer": ["plot-skill"] },
-    { "id": "chapter-tension-guide", "path": "data/chapter-tension-guide.json", "version": "1.0", "type": "张力指引数据", "schema": "templates/chapter-tension-guide.schema.json", "consumer": ["write-router", "core-skill"] }
+    { "id": "chapter-tension-guide", "path": "data/chapter-tension-guide.json", "version": "1.0", "type": "张力指引数据", "schema": "templates/chapter-tension-guide.schema.json", "consumer": ["write-router", "core-skill"] },
+    { "id": "settings-presets", "path": "data/settings-presets.json", "version": "1.0", "type": "题材分类预设数据", "schema": "templates/settings-presets.schema.json", "consumer": ["settings-skill"] }
   ],
   "rule": "新增数据文件：在 data/ 下建文件 → 本表注册（id/path/version/type/consumer）→ 技能文档引用。禁止未注册引用与未引用注册。"
 }
